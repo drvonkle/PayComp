@@ -1,0 +1,22 @@
+name: Verify public Resource Hub CDN
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify public HTML response
+        run: |
+          URL="https://cdn.jsdelivr.net/gh/drvonkle/PayComp@caba6513f37f749e33e3084506de15930244d1b9/index.html"
+          echo "Checking $URL"
+          curl -fsSI "$URL" | tee /tmp/headers.txt
+          grep -i '^content-type:.*text/html' /tmp/headers.txt
+          curl -fsS "$URL" | grep -q 'PayComp Resource Hub'
+          echo "Public Resource Hub CDN verified successfully."
