@@ -79,7 +79,7 @@ footer{text-align:center;padding:26px 0 0;font-weight:800;color:var(--muted);fon
 <script>
 const CODE=['E2C64D-','EB7316'].join(''),URL='https://uat.paycomp.com/operations-lab/agentbrokers-united',toast=document.getElementById('toast');
 function show(m){toast.textContent=m;toast.classList.add('show');clearTimeout(show.t);show.t=setTimeout(()=>toast.classList.remove('show'),2200)}
-async function copy(){try{await navigator.clipboard.writeText(CODE);show('WOPR password copied.')}catch(e){const t=document.createElement('textarea');t.value=CODE;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();show('WOPR password copied.')}}
+async function copy(){const v='PayComp-'+CODE;try{await navigator.clipboard.writeText(v);show('WOPR password copied.')}catch(e){const t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();show('WOPR password copied.')}}
 function openWopr(){copy();window.open(URL,'_blank','noopener,noreferrer');show('Opening WOPR…')}
 document.getElementById('pw').addEventListener('click',copy);
 document.getElementById('copyPw').addEventListener('click',copy);
