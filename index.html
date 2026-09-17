@@ -54,7 +54,7 @@ footer{text-align:center;padding:26px 0 0;font-weight:800;color:var(--muted);fon
 
 <article class="card" style="--accent:#FEC900">
 <div class="icon3d"><svg viewBox="0 0 100 100"><rect x="18" y="22" width="64" height="42" rx="8"/><path d="M32 73h36M50 64v9M30 39h16M30 49h25M61 45l7 7 12-16"/></svg></div>
-<div><h2>WOPR <span style="font-size:.68em">(Payroll Intelligence)</span></h2><span class="sub">Operations Lab</span><p>Open WOPR for payroll processing, validation, mapping, and reporting workflows.</p><div class="pwrow"><button id="pw" class="pw" type="button" aria-label="Copy WOPR password"><b>PW:</b> <code><span>E2C64D-</span><span>EB7316</span></code></button><button id="copyPw" class="btn alt" type="button">Copy Password</button></div><div class="actions"><button id="wopr" class="btn" type="button">Enter WOPR</button></div></div>
+<div><h2>WOPR <span style="font-size:.68em">(Payroll Intelligence)</span></h2><span class="sub">Operations Lab</span><p>Open WOPR for payroll processing, validation, mapping, and reporting workflows.</p><div class="pwrow"><button id="pw" class="pw" type="button" aria-label="Copy WOPR password"><b>PW:</b> <code><span>PayComp-E2C64D-</span><span>EB7316</span></code></button><button id="copyPw" class="btn alt" type="button">Copy Password</button></div><div class="actions"><a id="wopr" class="btn" href="https://uat.paycomp.com/operations-lab/agentbrokers-united" target="_blank" rel="noopener noreferrer">Enter WOPR</a></div></div>
 </article>
 
 <article class="card" style="--accent:#17B6F7">
@@ -77,13 +77,12 @@ footer{text-align:center;padding:26px 0 0;font-weight:800;color:var(--muted);fon
 </div>
 <div id="toast" class="toast" aria-live="polite">Copied.</div>
 <script>
-const CODE=['E2C64D-','EB7316'].join(''),URL='https://uat.paycomp.com/operations-lab/agentbrokers-united',toast=document.getElementById('toast');
+const CODE=['PayComp-','E2C64D-','EB7316'].join(''),toast=document.getElementById('toast');
 function show(m){toast.textContent=m;toast.classList.add('show');clearTimeout(show.t);show.t=setTimeout(()=>toast.classList.remove('show'),2200)}
-async function copy(){const v='PayComp-'+CODE;try{await navigator.clipboard.writeText(v);show('WOPR password copied.')}catch(e){const t=document.createElement('textarea');t.value=v;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();show('WOPR password copied.')}}
-function openWopr(){copy();window.open(URL,'_blank','noopener,noreferrer');show('Opening WOPR…')}
+async function copy(){try{await navigator.clipboard.writeText(CODE);show('WOPR password copied.')}catch(e){const t=document.createElement('textarea');t.value=CODE;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();show('WOPR password copied.')}}
 document.getElementById('pw').addEventListener('click',copy);
 document.getElementById('copyPw').addEventListener('click',copy);
-document.getElementById('wopr').addEventListener('click',openWopr);
+document.getElementById('wopr').addEventListener('click',copy);
 </script>
 </body>
 </html>
