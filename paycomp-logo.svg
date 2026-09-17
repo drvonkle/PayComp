@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" role="img" aria-labelledby="title desc">
+  <title id="title">PayComp</title>
+  <desc id="desc">PayComp Pay-As-You-Go Integration logo</desc>
+  <defs>
+    <linearGradient id="payGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#06B0ED"/>
+      <stop offset="1" stop-color="#165DFF"/>
+    </linearGradient>
+  </defs>
+  <path d="M145 71 C300 12 571 17 730 70" fill="none" stroke="#FE8B00" stroke-width="10" stroke-linecap="round"/>
+  <text x="82" y="151" font-family="Arial, Helvetica, sans-serif" font-size="108" font-style="italic" font-weight="800" letter-spacing="-7">
+    <tspan fill="url(#payGrad)">Pay</tspan><tspan fill="#061A44">Comp</tspan>
+  </text>
+  <text x="257" y="202" font-family="Arial, Helvetica, sans-serif" font-size="31" font-style="italic" font-weight="700" fill="#FE8B00" letter-spacing=".5">Pay-As-You-Go Integration</text>
+</svg>
