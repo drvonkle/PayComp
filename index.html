@@ -9,27 +9,24 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header" id="top">
-    <div class="container nav-wrap">
-      <a class="brand" href="#top" aria-label="PayComp home">
-        <img src="paycomp-logo-top.png?v=2" alt="PayComp">
-      </a>
-
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span></span><span></span><span></span>
-        <span class="sr-only">Toggle navigation</span>
-      </button>
-
-      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
-        <a href="#solutions">Solutions</a>
-        <a href="#how-it-works">How It Works</a>
-        <a href="#technology">Technology</a>
-        <a href="#numbers">Why PayComp</a>
-        <a class="nav-login" href="https://atlas.paycomp.com/agency-app/login/" target="_blank" rel="noopener">Log in</a>
-        <a class="button button-small" href="https://paycomp.com/new-agent-signup/" target="_blank" rel="noopener">Get Started</a>
-      </nav>
-    </div>
-  </header>
+  
+<header class="site-header" id="top">
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html" aria-label="PayComp home"><img src="paycomp-logo-top.png?v=2" alt="PayComp"></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span><span class="sr-only">Toggle navigation</span>
+    </button>
+    <nav class="site-nav multi-page-nav" id="site-nav" aria-label="Primary navigation">
+      <a class="active" href="index.html">Home</a>
+      <a class="" href="why-paycomp.html">Why PayComp</a>
+      <a class="" href="atlas.html">ATLAS</a>
+      <a class="" href="technology.html">Technology</a>
+      <a class="" href="mga.html">MGA</a>
+      <a class="" href="payroll-integration.html">Payroll Integration</a>
+      <a class="" href="privacy-security.html">Privacy/Security</a>
+    </nav>
+  </div>
+</header>
 
   <main>
     <section class="hero section">
@@ -114,13 +111,13 @@
             <div class="icon-badge">A</div>
             <h3>Agencies &amp; Brokers</h3>
             <p>Close more deals with zero-down Pay-As-You-Go workers' compensation options that actually work.</p>
-            <a href="https://paycomp.com/why-paycomp/" target="_blank" rel="noopener">Learn more →</a>
+            <a href="why-paycomp.html">Learn more →</a>
           </article>
           <article class="solution-card reveal">
             <div class="icon-badge">M</div>
             <h3>Wholesalers / MGAs</h3>
             <p>Flexible Pay-As-You-Go programs through a modern integration platform built for Wholesalers/MGAs.</p>
-            <a href="https://paycomp.com/mga" target="_blank" rel="noopener">Learn more →</a>
+            <a href="mga.html">Learn more →</a>
           </article>
           <article class="solution-card reveal">
             <div class="icon-badge">N</div>
@@ -132,13 +129,13 @@
             <div class="icon-badge">C</div>
             <h3>Insurance Carriers</h3>
             <p>Expand distribution and offer Pay-As-You-Go without payroll reporting and data issues.</p>
-            <a href="https://paycomp.com/technology" target="_blank" rel="noopener">Explore technology →</a>
+            <a href="technology.html">Explore technology →</a>
           </article>
           <article class="solution-card reveal">
             <div class="icon-badge">P</div>
             <h3>Payroll Providers</h3>
             <p>Eliminate manual workers' comp reporting, connect to carrier programs and automate premium workflows.</p>
-            <a href="https://paycomp.com/5-levels-of-payroll-provider-integration" target="_blank" rel="noopener">See integration levels →</a>
+            <a href="payroll-integration.html">See integration levels →</a>
           </article>
         </div>
       </div>
@@ -185,7 +182,7 @@
             <span>Classification-aware calculations</span>
             <span>Carrier-ready reporting</span>
           </div>
-          <a class="button button-outline" href="https://paycomp.com/technology" target="_blank" rel="noopener">Explore the technology</a>
+          <a class="button button-outline" href="technology.html">Explore the technology</a>
         </div>
       </div>
     </section>
@@ -236,26 +233,27 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <img src="paycomp-logo-top.png?v=2" alt="PayComp" class="footer-logo">
-        <p>The unified Pay-As-You-Go workers' compensation platform connecting carriers, brokers, and payroll — in real time.</p>
-      </div>
-      <div class="footer-links">
-        <a href="#solutions">Solutions</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="https://paycomp.com/atlas" target="_blank" rel="noopener">ATLAS</a>
-        <a href="https://paycomp.com/technology" target="_blank" rel="noopener">Technology</a>
-        <a href="https://paycomp.com/terms-of-use-and-data-privacy" target="_blank" rel="noopener">Privacy &amp; Security</a>
-      </div>
+  
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <img src="paycomp-logo-top.png?v=2" alt="PayComp" class="footer-logo">
+      <p>The unified Pay-As-You-Go workers' compensation platform connecting carriers, brokers, and payroll — in real time.</p>
     </div>
-    <div class="container footer-bottom">
-      <span>© <span id="year"></span> PayComp. Website rebuild sandbox.</span>
-      <a href="#top">Back to top ↑</a>
+    <div class="footer-links">
+      <a href="why-paycomp.html">Why PayComp</a>
+      <a href="atlas.html">ATLAS</a>
+      <a href="technology.html">Technology</a>
+      <a href="mga.html">MGA</a>
+      <a href="payroll-integration.html">Payroll Integration</a>
+      <a href="privacy-security.html">Privacy &amp; Security</a>
     </div>
-  </footer>
-
-  <script src="script.js"></script>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="year"></span> PayComp. Website rebuild sandbox.</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+<script src="script.js"></script>
 </body>
 </html>
