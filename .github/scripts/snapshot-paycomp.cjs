@@ -4,6 +4,9 @@ const path = require("path");
 
 const base = "https://www.paycomp.com";
 const outDir = process.env.OUT_DIR || "website-rebuild";
+const assetUrls = new Set();
+const assetsDir = path.join(outDir, "assets");
+fs.mkdirSync(assetsDir, { recursive: true });
 
 const routes = [
   ["/", "index.html"],
@@ -102,7 +105,7 @@ fs.mkdirSync(outDir, { recursive: true });
     });
     await page.waitForTimeout(300);
 
-    const html = await page.evaluate(({ routePairs }) => {
+    const captured = await page.evaluate(({ routePairs }) => {
       const routeMap = new Map(routePairs);
       const base = "https://www.paycomp.com";
       const clone = document.documentElement.cloneNode(true);
@@ -110,20 +113,38 @@ fs.mkdirSync(outDir, { recursive: true });
       clone.querySelectorAll("script").forEach(el => el.remove());
       clone.querySelectorAll("#crisp-chatbox,[data-crisp-client]").forEach(el => el.remove());
 
+      clone.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"]').forEach(el => {
+        const href = el.getAttribute("href");
+        if (href && href.startsWith("/")) el.setAttribute("href", href.slice(1));
+      });
+
       clone.querySelectorAll("link[rel=stylesheet]").forEach(el => {
         const href = el.getAttribute("href") || "";
         if (href.includes("/assets/")) el.setAttribute("href", "production.css");
       });
 
+      const pageAssets = new Set();
       clone.querySelectorAll("[src]").forEach(el => {
         const src = el.getAttribute("src");
-        if (src && src.startsWith("/")) el.setAttribute("src", base + src);
+        if (!src) return;
+        if (src.startsWith("/assets/")) {
+          pageAssets.add(src);
+          el.setAttribute("src", "assets/" + src.split("/").pop());
+        } else if (src.startsWith("/")) {
+          el.setAttribute("src", base + src);
+        }
       });
       clone.querySelectorAll("[srcset]").forEach(el => {
         const srcset = el.getAttribute("srcset");
-        if (srcset) el.setAttribute("srcset", srcset.split(",").map(p => {
+        if (!srcset) return;
+        el.setAttribute("srcset", srcset.split(",").map(p => {
           const bits = p.trim().split(/\s+/);
-          if (bits[0].startsWith("/")) bits[0] = base + bits[0];
+          if (bits[0].startsWith("/assets/")) {
+            pageAssets.add(bits[0]);
+            bits[0] = "assets/" + bits[0].split("/").pop();
+          } else if (bits[0].startsWith("/")) {
+            bits[0] = base + bits[0];
+          }
           return bits.join(" ");
         }).join(", "));
       });
@@ -152,8 +173,14 @@ fs.mkdirSync(outDir, { recursive: true });
       helperJs.defer = true;
       clone.querySelector("body").appendChild(helperJs);
 
-      return "<!doctype html>\n" + clone.outerHTML;
+      return {
+        html: "<!doctype html>\n" + clone.outerHTML,
+        assets: [...pageAssets]
+      };
     }, { routePairs: routes });
+
+    const html = captured.html;
+    captured.assets.forEach(a => assetUrls.add(a));
 
     const liveStats = await page.evaluate(() => ({
       sections: document.querySelectorAll("section").length,
@@ -183,8 +210,32 @@ fs.mkdirSync(outDir, { recursive: true });
   const source = await (await fetch(base + "/")).text();
   const cssMatch = source.match(/href="(\/assets\/[^"]+\.css)"/);
   if (!cssMatch) throw new Error("Production CSS asset not found");
-  const css = await (await fetch(base + cssMatch[1])).text();
+  let css = await (await fetch(base + cssMatch[1])).text();
+
+  // Mirror every production asset referenced by HTML or CSS.
+  for (const match of css.matchAll(/url\((['"]?)(\/assets\/[^)'"]+)\1\)/g)) {
+    assetUrls.add(match[2]);
+  }
+
+  for (const assetPath of assetUrls) {
+    const res = await fetch(base + assetPath);
+    if (!res.ok) throw new Error("Failed to download asset " + assetPath + ": " + res.status);
+    const buf = Buffer.from(await res.arrayBuffer());
+    fs.writeFileSync(path.join(assetsDir, assetPath.split("/").pop()), buf);
+  }
+
+  css = css.replace(/url\((['"]?)(\/assets\/[^)'"]+)\1\)/g,
+    (_m, quote, assetPath) => "url(" + quote + "assets/" + assetPath.split("/").pop() + quote + ")");
+
   fs.writeFileSync(path.join(outDir, "production.css"), css);
+
+  // Mirror root branding icons used by the page head.
+  for (const icon of ["favicon.svg","favicon.png","apple-touch-icon.png"]) {
+    try {
+      const res = await fetch(base + "/" + icon);
+      if (res.ok) fs.writeFileSync(path.join(outDir, icon), Buffer.from(await res.arrayBuffer()));
+    } catch {}
+  }
 
   fs.writeFileSync(path.join(outDir, "replica.css"), `
 /* Small static-snapshot helpers. Production visuals remain in production.css. */
