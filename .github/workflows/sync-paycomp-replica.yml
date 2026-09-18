@@ -49,6 +49,7 @@ jobs:
         run: |
           rm -rf /tmp/rebuild
           cp -R website-rebuild /tmp/rebuild
+          rm -rf node_modules package.json package-lock.json
           git checkout -B website-rebuild origin/website-rebuild
           find . -maxdepth 1 -type f ! -name 'REBUILD_README.md' -delete
           cp -R /tmp/rebuild/. .
