@@ -59,18 +59,12 @@ fs.mkdirSync(outDir, { recursive: true });
       document.querySelectorAll("img").forEach(img => img.loading = "eager");
     });
 
-    let previousHeight = 0;
-    for (let pass = 0; pass < 3; pass++) {
-      const height = await page.evaluate(() => document.body.scrollHeight);
-      for (let y = 0; y <= height; y += 320) {
-        await page.evaluate(v => window.scrollTo(0, v), y);
-        await page.waitForTimeout(140);
-      }
-      await page.waitForTimeout(450);
-      const nextHeight = await page.evaluate(() => document.body.scrollHeight);
-      if (nextHeight === previousHeight) break;
-      previousHeight = nextHeight;
+    const height = await page.evaluate(() => document.body.scrollHeight);
+    for (let y = 0; y <= height; y += 700) {
+      await page.evaluate(v => window.scrollTo(0, v), y);
+      await page.waitForTimeout(60);
     }
+    await page.waitForTimeout(250);
 
     // Wait for all image requests that can complete.
     await page.evaluate(async () => {
