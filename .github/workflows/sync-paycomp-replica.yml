@@ -30,7 +30,7 @@ jobs:
         run: |
           npm init -y
           npm install playwright@1.61.1
-          npx playwright install --with-deps chromium
+          google-chrome --version
 
       - name: Capture live PayComp site
         env:
