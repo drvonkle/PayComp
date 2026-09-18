@@ -24,7 +24,8 @@ const routes = [
   ["/insurance-carriers", "insurance-carriers.html"],
   ["/payroll-provider", "payroll-provider.html"],
   ["/privacy-policy", "privacy-policy.html"],
-  ["/terms-and-conditions", "terms-and-conditions.html"]
+  ["/terms-and-conditions", "terms-and-conditions.html"],
+  ["/contact", "contact.html"]
 ];
 
 const routeMap = new Map(routes);
@@ -50,14 +51,56 @@ fs.mkdirSync(outDir, { recursive: true });
     const page = await context.newPage();
     await page.goto(base + route, { waitUntil: "networkidle", timeout: 90000 });
 
-    // Trigger in-view motion so the static snapshot opens fully visible.
-    const height = await page.evaluate(() => document.body.scrollHeight);
-    for (let y = 0; y < height; y += 800) {
-      await page.evaluate(v => window.scrollTo(0, v), y);
-      await page.waitForTimeout(80);
+    // Fully hydrate every lazy-loaded section/image and allow in-view motion to finish.
+    await page.evaluate(() => {
+      document.querySelectorAll("img").forEach(img => img.loading = "eager");
+    });
+
+    let previousHeight = 0;
+    for (let pass = 0; pass < 3; pass++) {
+      const height = await page.evaluate(() => document.body.scrollHeight);
+      for (let y = 0; y <= height; y += 320) {
+        await page.evaluate(v => window.scrollTo(0, v), y);
+        await page.waitForTimeout(140);
+      }
+      await page.waitForTimeout(450);
+      const nextHeight = await page.evaluate(() => document.body.scrollHeight);
+      if (nextHeight === previousHeight) break;
+      previousHeight = nextHeight;
     }
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(250);
+
+    // Wait for all image requests that can complete.
+    await page.evaluate(async () => {
+      const imgs = [...document.images];
+      await Promise.all(imgs.map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          const done = () => resolve();
+          img.addEventListener("load", done, { once: true });
+          img.addEventListener("error", done, { once: true });
+          setTimeout(done, 5000);
+        });
+      }));
+    });
+
+    // Framer Motion leaves off-screen elements at opacity:0 in the DOM until
+    // their IntersectionObserver animation runs. Normalize only content inside
+    // main/footer so intentionally hidden header dropdown menus stay hidden.
+    await page.evaluate(() => {
+      for (const root of [document.querySelector("main"), document.querySelector("footer")]) {
+        if (!root) continue;
+        root.querySelectorAll("*").forEach(el => {
+          const style = getComputedStyle(el);
+          if (style.opacity === "0" && style.display !== "none" && style.visibility !== "hidden") {
+            el.style.opacity = "1";
+            if (el.style.transform) el.style.transform = "none";
+            if (el.style.filter) el.style.filter = "none";
+          }
+        });
+      }
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(300);
 
     const html = await page.evaluate(({ routePairs }) => {
       const routeMap = new Map(routePairs);
@@ -112,9 +155,29 @@ fs.mkdirSync(outDir, { recursive: true });
       return "<!doctype html>\n" + clone.outerHTML;
     }, { routePairs: routes });
 
+    const liveStats = await page.evaluate(() => ({
+      sections: document.querySelectorAll("section").length,
+      images: document.querySelectorAll("img").length,
+      headings: document.querySelectorAll("h1,h2,h3").length,
+      bodyChars: document.body.innerText.trim().length
+    }));
+
+    const snapshotStats = {
+      sections: (html.match(/<section\\b/g) || []).length,
+      images: (html.match(/<img\\b/g) || []).length,
+      headings: (html.match(/<h[123]\\b/g) || []).length
+    };
+
+    if (snapshotStats.sections !== liveStats.sections ||
+        snapshotStats.images !== liveStats.images ||
+        snapshotStats.headings !== liveStats.headings) {
+      throw new Error("Incomplete snapshot for " + route + ": " +
+        JSON.stringify({ liveStats, snapshotStats }));
+    }
+
     fs.writeFileSync(path.join(outDir, file), html);
     await page.close();
-    console.log("captured", route, "->", file);
+    console.log("captured", route, "->", file, liveStats);
   }
 
   const source = await (await fetch(base + "/")).text();
@@ -142,11 +205,17 @@ fs.mkdirSync(outDir, { recursive: true });
   if (toggle && desktop) {
     const menu = document.createElement("div");
     menu.className = "replica-mobile-menu";
-    const links = [...desktop.querySelectorAll("a")];
-    menu.innerHTML = links.map(a => {
-      const t=(a.textContent||"").trim();
-      const h=a.getAttribute("href")||"#";
-      return '<a href="'+h+'">'+t+'</a>';
+    const groups = [...desktop.children];
+    menu.innerHTML = groups.map(group => {
+      const direct = group.querySelector(":scope > a");
+      if (!direct) return "";
+      const title = (direct.textContent || "").trim();
+      const href = direct.getAttribute("href") || "#";
+      const children = [...group.querySelectorAll(":scope > div a")];
+      if (!children.length) return '<a href="'+href+'">'+title+'</a>';
+      return '<div class="replica-mobile-group"><a href="'+href+'">'+title+'</a>' +
+        children.map(a => '<a class="sub" href="'+(a.getAttribute("href")||"#")+'">'+((a.textContent||"").trim())+'</a>').join("") +
+        '</div>';
     }).join("");
     header.querySelector(":scope > div")?.appendChild(menu);
     toggle.addEventListener("click", e => {
