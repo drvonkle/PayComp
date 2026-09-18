@@ -8,6 +8,10 @@ on:
       - ".github/scripts/snapshot-paycomp.cjs"
   workflow_dispatch:
 
+concurrency:
+  group: paycomp-replica-sync
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
