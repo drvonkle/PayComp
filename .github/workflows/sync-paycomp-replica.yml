@@ -45,7 +45,7 @@ jobs:
         run: |
           rm -rf /tmp/rebuild
           cp -R website-rebuild /tmp/rebuild
-          git checkout website-rebuild
+          git checkout -B website-rebuild origin/website-rebuild
           find . -maxdepth 1 -type f ! -name 'REBUILD_README.md' -delete
           cp -R /tmp/rebuild/. .
           git add .
