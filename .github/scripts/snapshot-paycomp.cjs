@@ -149,6 +149,27 @@ fs.mkdirSync(outDir, { recursive: true });
         }).join(", "));
       });
 
+      clone.querySelectorAll("[poster]").forEach(el => {
+        const poster = el.getAttribute("poster");
+        if (!poster) return;
+        if (poster.startsWith("/assets/")) {
+          pageAssets.add(poster);
+          el.setAttribute("poster", "assets/" + poster.split("/").pop());
+        } else if (poster.startsWith("/")) {
+          el.setAttribute("poster", base + poster);
+        }
+      });
+
+      clone.querySelectorAll("[style]").forEach(el => {
+        const styleText = el.getAttribute("style") || "";
+        const rewritten = styleText.replace(/url\\((['"]?)(\\/assets\\/[^)'"]+)\\1\\)/g,
+          (_m, quote, assetPath) => {
+            pageAssets.add(assetPath);
+            return "url(" + quote + "assets/" + assetPath.split("/").pop() + quote + ")";
+          });
+        if (rewritten !== styleText) el.setAttribute("style", rewritten);
+      });
+
       clone.querySelectorAll("a[href]").forEach(a => {
         const href = a.getAttribute("href");
         if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
