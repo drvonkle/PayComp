@@ -156,7 +156,7 @@ fs.mkdirSync(outDir, { recursive: true });
 
       clone.querySelectorAll("[style]").forEach(el => {
         const styleText = el.getAttribute("style") || "";
-        const rewritten = styleText.replace(/url\\((['"]?)(\\/assets\\/[^)'"]+)\\1\\)/g,
+        const rewritten = styleText.replace(/url\((['"]?)(\/assets\/[^)'"]+)\1\)/g,
           (_m, quote, assetPath) => {
             pageAssets.add(assetPath);
             return "url(" + quote + "assets/" + assetPath.split("/").pop() + quote + ")";
