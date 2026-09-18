@@ -190,9 +190,9 @@ fs.mkdirSync(outDir, { recursive: true });
     }));
 
     const snapshotStats = {
-      sections: (html.match(/<section\\b/g) || []).length,
-      images: (html.match(/<img\\b/g) || []).length,
-      headings: (html.match(/<h[123]\\b/g) || []).length
+      sections: (html.match(/<section\b/g) || []).length,
+      images: (html.match(/<img\b/g) || []).length,
+      headings: (html.match(/<h[123]\b/g) || []).length
     };
 
     if (snapshotStats.sections !== liveStats.sections ||
