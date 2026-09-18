@@ -1,0 +1,53 @@
+name: Sync PayComp Replica
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/sync-paycomp-replica.yml"
+      - ".github/scripts/snapshot-paycomp.cjs"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright@1.61.1
+          npx playwright install --with-deps chromium
+
+      - name: Capture live PayComp site
+        env:
+          OUT_DIR: website-rebuild
+        run: node .github/scripts/snapshot-paycomp.cjs
+
+      - name: Commit GitHub Pages preview
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website-rebuild
+          git diff --cached --quiet || git commit -m "Sync exact PayComp website replica"
+          git push origin main
+
+      - name: Sync editable website-rebuild branch
+        run: |
+          rm -rf /tmp/rebuild
+          cp -R website-rebuild /tmp/rebuild
+          git checkout website-rebuild
+          find . -maxdepth 1 -type f ! -name 'REBUILD_README.md' -delete
+          cp -R /tmp/rebuild/. .
+          git add .
+          git diff --cached --quiet || git commit -m "Sync exact PayComp website replica"
+          git push origin website-rebuild
