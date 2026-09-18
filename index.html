@@ -55,19 +55,19 @@ animation:ringsPulse 9s ease-in-out infinite alternate}
 @keyframes ringsPulse{0%{opacity:.58;transform:scale(1)}100%{opacity:.9;transform:scale(1.025)}}
 @keyframes beamMove{0%{transform:translateX(0) rotate(18deg);opacity:.20}50%{opacity:.38}100%{transform:translateX(70px) rotate(18deg);opacity:.12}}
 .site-header{padding:22px 0 14px;text-align:center}
-.logo-shell{position:relative;display:inline-flex;align-items:center;justify-content:center;width:min(870px,96vw);padding:12px 16px;border-radius:30px;isolation:isolate}
-.logo-shell:before{content:"";position:absolute;inset:4px 5%;z-index:-3;border-radius:28px;background:linear-gradient(120deg,rgba(255,255,255,.86),rgba(255,255,255,.58));border:1px solid rgba(255,255,255,.75);box-shadow:0 16px 45px rgba(6,42,117,.08);backdrop-filter:blur(4px)}
-.logo-glow{position:absolute;inset:8px 3%;z-index:-2;border-radius:24px;background:
-radial-gradient(circle at 20% 50%,rgba(6,176,237,.25),transparent 28%),
-radial-gradient(circle at 80% 50%,rgba(11,87,208,.20),transparent 27%),
-linear-gradient(90deg,rgba(255,255,255,.58),rgba(255,255,255,.22));
-filter:blur(13px);opacity:.95;animation:logoGlowPulse 5.8s ease-in-out infinite}
-.logo-scan{position:absolute;left:-18%;top:50%;width:24%;height:68%;transform:translateY(-50%) skewX(-18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.72),transparent);filter:blur(2px);opacity:0;animation:logoScan 6.8s ease-in-out infinite;z-index:2;pointer-events:none}
-.logo{display:block;width:min(820px,94vw);height:auto;margin:0 auto;object-fit:contain;image-rendering:auto}
-.logo-animated{position:relative;z-index:1;filter:drop-shadow(0 7px 18px rgba(11,87,208,.10)) drop-shadow(0 2px 4px rgba(6,176,237,.08));animation:logoFloat 6.2s ease-in-out infinite;will-change:transform}
-@keyframes logoFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.006)}}
-@keyframes logoGlowPulse{0%,100%{opacity:.68;transform:scale(.995)}50%{opacity:1;transform:scale(1.018)}}
-@keyframes logoScan{0%,20%{left:-18%;opacity:0}28%{opacity:.62}52%{left:98%;opacity:.20}100%{left:98%;opacity:0}}
+.logo-shell{position:relative;display:inline-flex;align-items:center;justify-content:center;width:min(870px,96vw);padding:12px 16px 18px;border-radius:30px;isolation:isolate}
+.logo-shell:before{content:"";position:absolute;inset:4px 5%;z-index:-3;border-radius:28px;background:linear-gradient(120deg,rgba(255,255,255,.92),rgba(255,255,255,.70));border:1px solid rgba(216,230,251,.92);box-shadow:0 16px 40px rgba(6,42,117,.07)}
+.logo-glow{position:absolute;inset:10px 5%;z-index:-2;border-radius:24px;background:
+radial-gradient(circle at 22% 50%,rgba(6,176,237,.16),transparent 30%),
+radial-gradient(circle at 78% 50%,rgba(11,87,208,.13),transparent 30%);
+filter:blur(10px);opacity:.78;animation:logoGlowPulse 6.2s ease-in-out infinite}
+.logo-scan{position:absolute;left:7%;right:7%;bottom:8px;height:2px;overflow:hidden;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(6,176,237,.16),rgba(11,87,208,.18),transparent);z-index:2;pointer-events:none}
+.logo-scan:after{content:"";position:absolute;top:0;bottom:0;left:-24%;width:22%;background:linear-gradient(90deg,transparent,#06B0ED,#0B57D0,transparent);box-shadow:0 0 8px rgba(6,176,237,.26);animation:logoScan 7.2s ease-in-out infinite}
+.logo{display:block;width:min(820px,94vw);height:auto;margin:0 auto;object-fit:contain;image-rendering:auto;shape-rendering:geometricPrecision}
+.logo-animated{position:relative;z-index:1;filter:none;animation:logoFloat 6.6s ease-in-out infinite;will-change:transform}
+@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes logoGlowPulse{0%,100%{opacity:.62;transform:scale(.998)}50%{opacity:.84;transform:scale(1.008)}}
+@keyframes logoScan{0%,18%{left:-24%;opacity:0}26%{opacity:.85}58%{left:104%;opacity:.5}72%,100%{left:104%;opacity:0}}
 .hero{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:34px;padding:30px 36px;margin:8px 0 26px;box-shadow:0 18px 44px rgba(9,46,124,.08);position:relative;overflow:hidden;isolation:isolate}
 .hero:after{content:"";position:absolute;right:-80px;top:-120px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(6,176,237,.18),transparent 68%);z-index:-2}
 .hero:before{content:"";position:absolute;left:-28%;bottom:0;width:28%;height:2px;background:linear-gradient(90deg,transparent,rgba(6,176,237,.9),rgba(22,93,255,.72),transparent);box-shadow:0 0 12px rgba(6,176,237,.34);animation:heroScan 7s ease-in-out infinite;z-index:-1}
@@ -136,7 +136,7 @@ footer{text-align:center;padding:26px 0 0;font-weight:800;color:var(--muted);fon
   <span class="data-node n8"></span>
 </div>
 <div class="wrap">
-<header class="site-header"><div class="logo-shell"><span class="logo-glow"></span><span class="logo-scan"></span><img class="logo logo-animated" alt="PayComp - Pay-As-You-Go Integration" src="paycomp-logo.svg?v=4"></div></header>
+<header class="site-header"><div class="logo-shell"><span class="logo-glow"></span><span class="logo-scan"></span><img class="logo logo-animated" alt="PayComp - Pay-As-You-Go Integration" src="paycomp-logo.svg?v=5"></div></header>
 <section class="hero"><div class="eyebrow">Quick Access Dashboard</div><h1 class="hero-title">PayComp Resource Hub<span class="hero-dot" aria-hidden="true"></span></h1></section>
 <main class="grid">
 <article class="card" style="--accent:#06B0ED"><div class="icon3d"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="28"/><path d="M22 50h56M50 22c11 9 18 18 18 28s-7 19-18 28M50 22c-11 9-18 18-18 28s7 19 18 28M27 35h46M27 65h46"/></svg></div><div><h2>PayComp Website</h2><span class="sub">Public Website</span><p>Open the main PayComp site for product information, services, and company resources.</p><div class="actions"><a class="btn" href="https://www.paycomp.com" target="_blank" rel="noopener noreferrer">Open Website</a></div></div></article>
