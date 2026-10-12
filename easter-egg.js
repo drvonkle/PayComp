@@ -4,7 +4,7 @@
   const canvas = overlay.querySelector('canvas');
   const context = canvas.getContext('2d');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let clicks = 0, resetClicks, cleanupTimer, frame, audio, running = false;
+  let clicks = 0, resetClicks, cleanupTimer, outroTimer, frame, audio, running = false;
   let restoreOverflow, restoreFocus;
   logo.tabIndex = 0;
   logo.setAttribute('role', 'button');
@@ -47,8 +47,8 @@
   function finish() {
     if (!running) return;
     running=false; clicks=0;
-    clearTimeout(cleanupTimer); cancelAnimationFrame(frame);
-    overlay.classList.remove('active'); overlay.setAttribute('aria-hidden','true');
+    clearTimeout(cleanupTimer); clearTimeout(outroTimer); cancelAnimationFrame(frame);
+    overlay.classList.remove('active'); overlay.classList.remove('ending'); overlay.setAttribute('aria-hidden','true');
     document.body.style.overflow=restoreOverflow;
     context.clearRect(0,0,canvas.width,canvas.height);
     if(audio){audio.close().catch(()=>{});audio=null;}
@@ -96,6 +96,7 @@
       frame=requestAnimationFrame(animate);
     }
     frame=requestAnimationFrame(animate);
+    outroTimer=setTimeout(()=>overlay.classList.add('ending'),4200);
     cleanupTimer=setTimeout(finish,4800);
   }
   function activate() {
