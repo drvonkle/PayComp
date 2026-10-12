@@ -1,0 +1,11 @@
+.site-logo{cursor:pointer;user-select:none;-webkit-user-drag:none}
+.site-logo:focus-visible{outline:3px solid #fec900;outline-offset:6px;border-radius:8px}
+.hero-easter-egg{display:none;position:fixed;inset:0;z-index:99999;overflow:hidden;background:#03112c;isolation:isolate;pointer-events:none}
+.hero-easter-egg.active{display:block;animation:hero-exit 4.8s linear both}
+.hero-easter-egg::before{content:"";position:absolute;inset:-30px;background:linear-gradient(#03112c66,#03112c99),url('assets/easter-egg/paycomp-hero.webp') center/cover;filter:blur(18px);z-index:0}
+.hero-easter-egg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;opacity:0}
+.hero-easter-egg.active img{animation:hero-reveal 4.8s ease-out both}
+.hero-easter-egg canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+@keyframes hero-reveal{0%,10%{opacity:0;transform:scale(.7)}20%{opacity:1;transform:scale(1.03)}30%,86%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.04)}}
+@keyframes hero-exit{0%,88%{opacity:1}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.hero-easter-egg.active img{animation:hero-calm 4.8s linear both}.hero-easter-egg canvas{display:none}@keyframes hero-calm{0%{opacity:0}15%,85%{opacity:1}100%{opacity:0}}}
