@@ -3,7 +3,7 @@
 .hero-easter-egg{display:none;position:fixed;inset:0;z-index:99999;overflow:hidden;background:#03112c;isolation:isolate;pointer-events:none}
 .hero-easter-egg.active{display:block;opacity:1;transition:opacity .6s ease}
 .hero-easter-egg.ending{opacity:0}
-.hero-easter-egg::before{content:"";position:absolute;inset:-30px;background:linear-gradient(#03112c66,#03112c99),url('assets/easter-egg/paycomp-hero.webp') center/cover;filter:blur(18px);z-index:0}
+.hero-easter-egg::before{content:"";position:absolute;inset:-30px;background:linear-gradient(#03112c66,#03112c99),url('assets/easter-egg/paycomp-hero.webp?v=2') center/cover;filter:blur(18px);z-index:0}
 .hero-easter-egg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:1;opacity:1}
 .hero-easter-egg.active img{animation:hero-reveal 4.8s ease-out both}
 .hero-easter-egg canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2}
