@@ -76,7 +76,7 @@ toggle.addEventListener('click',()=>{const show=!wrap.classList.contains('show')
 // On the Vercel deployment the secure HubSpot API is served at /api/lead.
 // When hosting the page on GitHub Pages, configure PAYCOMP_API_URL to point to that deployed backend.
 // Never put a HubSpot access token in this HTML or in a public GitHub file.
-const API_ENDPOINT = window.PAYCOMP_API_URL || (location.hostname.endsWith('.vercel.app') ? '/api/lead' : '');
+const API_ENDPOINT = window.PAYCOMP_API_URL || (location.hostname.endsWith('.github.io') ? '' : '/api/lead');
 const trap=document.createElement('input');trap.type='text';trap.name='website';trap.autocomplete='off';trap.tabIndex=-1;trap.setAttribute('aria-hidden','true');trap.style.cssText='position:absolute;left:-10000px;height:0;width:0;opacity:0';form.appendChild(trap);
 form.addEventListener('submit',async(e)=>{
   e.preventDefault();
