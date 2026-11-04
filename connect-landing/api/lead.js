@@ -12,6 +12,12 @@ function publicError(res, status, message) {
   res.status(status).json({ success: false, message });
 }
 function clean(v, max = 200) { return typeof v === 'string' ? v.trim().slice(0, max) : ''; }
+function normalizeUsPhone(value) {
+  let digits = String(value || '').replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1);
+  if (digits.length !== 10) return '';
+  return '+1 (' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+}
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 async function hs(path, method = 'GET', body) {
   const response = await fetch(HUBSPOT + path, {
@@ -108,7 +114,7 @@ module.exports = async function handler(req, res) {
     return publicError(res, 503, 'Lead intake is not configured yet.');
   const data = {
     firstname: clean(req.body?.firstname, 100), lastname: clean(req.body?.lastname, 100),
-    email: clean(req.body?.email, 254).toLowerCase(), phone: clean(req.body?.phone, 50),
+    email: clean(req.body?.email, 254).toLowerCase(), phone: normalizeUsPhone(clean(req.body?.phone, 50)),
     company: clean(req.body?.company, 200)
   };
   if (clean(req.body?.website)) return res.status(200).json({ success: true });
