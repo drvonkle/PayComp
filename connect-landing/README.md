@@ -21,12 +21,12 @@ Deploy this folder as a **Vercel project connected to the existing `drvonkle/Pay
 
 In the Vercel project **Settings > Environment Variables**, add:
 
-- `HUBSPOT_PRIVATE_APP_TOKEN`: Secret token for a dedicated HubSpot private app. Set it in Vercel only; never write or share it in GitHub source or page HTML.
+- `HUBSPOT_SERVICE_KEY`: Secret HubSpot Service Key (Settings > Integrations > Service Keys). Existing legacy private-app tokens can alternatively be set as HUBSPOT_PRIVATE_APP_TOKEN. Set it in Vercel only; never write or share it in GitHub source or page HTML.
 - `AUTO_CREATE_INBOUND_STAGE=true`: Optional. Provisions the specified stage if missing, if the app has sufficient pipeline permissions. Otherwise create the stage in HubSpot first.
 - `ALLOWED_ORIGINS=https://drvonkle.github.io`: Optional. Add any additional external domains hosting the form, separated by commas.
 - `TURNSTILE_SECRET_KEY`: Optional; requires a corresponding Cloudflare Turnstile widget in the page to obtain visitor tokens.
 
-Grant the HubSpot private app the **read/write** CRM scopes for Contacts, Companies and Leads, plus necessary permissions for lead pipeline reads and (if auto-creating the stage) pipeline modifications. Use only the scopes needed.
+Grant the HubSpot Service Key least-privilege **read/write** CRM scopes for Contacts, Companies and Leads, plus lead pipeline read and (if auto-creating the stage) pipeline modification permissions. Use the Service Key as the Bearer token. Never paste it into chat or commit it to GitHub. Use only the scopes needed.
 
 The form automatically posts to `/api/lead` when opened at a `*.vercel.app` URL. To use the original GitHub Pages URL, after deployment set `window.PAYCOMP_API_URL = 'https://YOUR-VERCEL-DOMAIN.vercel.app/api/lead';` in a script tag before the page's existing submit script, and list the GitHub Pages origin in `ALLOWED_ORIGINS`.
 
