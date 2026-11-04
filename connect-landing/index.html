@@ -83,11 +83,78 @@ h1{color:#09388b}
 body.thankyou-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.confetti-piece{animation:none;opacity:0}}
 
+
+/* Refined branded header lockup and responsive wave banner */
+.hero{background:radial-gradient(ellipse at 21% 15%,#fff 0%,#fafdff 55%,#edf5ff 100%);overflow:hidden;isolation:isolate;min-height:490px;border-bottom:1px solid #deebfa}
+.hero:before{content:"";position:absolute;inset:auto auto 0 -10%;width:57%;height:58%;opacity:.20;background-image:radial-gradient(#138acc 1.35px,transparent 1.35px);background-size:13px 13px;mask-image:radial-gradient(ellipse at 20% 95%,#000,transparent 74%);pointer-events:none;z-index:0}
+.hero:after{display:none}
+.hero-art{position:absolute;right:-70px;bottom:-108px;width:min(61vw,850px);max-width:none;pointer-events:none;z-index:0;opacity:.88}
+.hero-art svg{width:100%;height:auto;display:block}
+.nav{max-width:1180px;padding:18px 30px 5px;gap:30px;align-items:flex-start;z-index:2}
+.brand-lockup{display:flex;flex-direction:column;align-items:flex-start;flex:0 0 auto;max-width:min(380px,46vw)}
+.brand{display:block;line-height:1}
+.brand img{display:block;width:clamp(300px,30vw,380px);max-width:100%;height:auto}
+.brand-tagline{margin:2px 0 0 12px;color:#083e95;font-size:clamp(12px,1.2vw,16px);font-weight:850;letter-spacing:.22em;line-height:1.4}
+.nav-messaging{text-align:right;padding-top:31px;max-width:420px;margin-left:auto;position:relative;z-index:2}
+.nav-program{color:#083d93;font-weight:800;font-size:clamp(15px,1.6vw,21px);letter-spacing:-.035em;line-height:1.25}
+.nav-motto{margin-top:6px;color:#42678f;font-size:clamp(12px,1.12vw,14px);font-weight:600;letter-spacing:.005em;line-height:1.4}
+.hero-inner{max-width:1180px;padding:44px 30px 128px;z-index:2}
+.hero-inner h1{font-size:clamp(46px,5.6vw,73px);margin-top:11px;margin-bottom:17px;letter-spacing:-.057em}
+.hero-inner>p{max-width:565px;font-size:17px;line-height:1.67;color:#526a82}
+.eyebrow{font-size:11px;letter-spacing:.18em;font-weight:850}
+@media(max-width:780px){
+  .nav{padding:20px 22px 8px;gap:18px;align-items:flex-start}
+  .brand-lockup{max-width:56%}
+  .brand img{width:clamp(190px,35vw,300px)}
+  .brand-tagline{font-size:10px;letter-spacing:.16em;margin-left:6px}
+  .nav-messaging{padding-top:20px;max-width:40%;display:block}
+  .nav-program{font-size:14px}
+  .nav-motto{font-size:11px;margin-top:4px}
+  .hero-art{right:-180px;bottom:-65px;width:105vw;opacity:.48}
+  .hero-inner{padding:55px 22px 120px}
+  .hero-inner h1{font-size:clamp(42px,8.5vw,62px)}
+}
+@media(max-width:450px){
+  .hero{min-height:470px}
+  .nav{gap:12px}
+  .brand-lockup{max-width:58%}
+  .brand img{width:220px}
+  .brand-tagline{font-size:9px;letter-spacing:.125em}
+  .nav-messaging{padding-top:14px;max-width:42%}
+  .nav-program{font-size:12px}
+  .nav-motto{font-size:10px;line-height:1.35}
+  .hero-art{width:148vw;right:-190px;bottom:-55px;opacity:.3}
+  .hero-inner{padding-top:53px;padding-bottom:126px}
+  .hero-inner>p{font-size:15px}
+}
+
 </style>
 </head>
 <body>
 <header class="hero">
-<nav class="nav"><a href="/" class="brand" aria-label="PayComp home"><img src="assets/paycomp-logo.svg" alt="PayComp — Pay-As-You-Go Integration"></a><span class="navnote">Pay-As-You-Go Integration</span></nav>
+<nav class="nav" aria-label="PayComp header">
+  <div class="brand-lockup">
+    <a href="https://www.paycomp.com" class="brand" aria-label="PayComp home"><img src="assets/paycomp-wordmark.svg" alt="PayComp"></a>
+    <span class="brand-tagline">PAYROLL. SIMPLIFIED.</span>
+  </div>
+  <div class="nav-messaging">
+    <div class="nav-program">Pay-As-You-Go Integration</div>
+    <div class="nav-motto">Connecting people. Simplifying payroll.</div>
+  </div>
+</nav>
+<div class="hero-art" aria-hidden="true">
+  <svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="paycompBannerBlue" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#16b9ed" stop-opacity=".04"/><stop offset=".55" stop-color="#2e96ea" stop-opacity=".4"/><stop offset="1" stop-color="#0b4bba" stop-opacity=".64"/></linearGradient>
+      <linearGradient id="paycompBannerGold" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#ffe7ad" stop-opacity=".12"/><stop offset=".7" stop-color="#ffae22" stop-opacity=".44"/><stop offset="1" stop-color="#f88a00" stop-opacity=".77"/></linearGradient>
+      <pattern id="paycompBannerDots" width="15" height="15" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.6" fill="#1578cb" opacity=".34"/></pattern>
+    </defs>
+    <path d="M 65 510 Q 260 265 515 310 Q 675 320 800 80 Q 875 -35 975 -25" fill="none" stroke="url(#paycompBannerBlue)" stroke-width="165" stroke-linecap="round"/>
+    <path d="M 80 525 Q 275 315 510 342 Q 670 350 800 130 Q 890 -15 985 -10" fill="none" stroke="#fff" opacity=".72" stroke-width="54"/>
+    <path d="M 110 540 Q 280 355 495 376 Q 673 390 819 172 Q 890 72 985 14" fill="none" stroke="url(#paycompBannerGold)" stroke-width="20" stroke-linecap="round"/>
+    <path d="M 27 460 Q 257 290 476 338 Q 650 373 788 160 L 900 500 L 10 500 Z" fill="url(#paycompBannerDots)" opacity=".36"/>
+  </svg>
+</div>
 <div class="hero-inner"><div class="eyebrow">Welcome to PayComp</div><h1>Let's connect<span style="color:var(--gold)">.</span></h1><p>Whether you're ready to talk or just want to learn more, we're here to help. Choose the option that works best for you.</p></div>
 </header>
 <main class="content">
