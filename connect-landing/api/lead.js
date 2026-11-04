@@ -1,9 +1,10 @@
 /**
  * PayComp IPPA - 2026 lead intake (Vercel Serverless Function).
- * Requires HUBSPOT_PRIVATE_APP_TOKEN as a Vercel environment variable.
+ * Requires HUBSPOT_SERVICE_KEY (preferred) or an existing HUBSPOT_PRIVATE_APP_TOKEN in Vercel.
  * Do not commit credentials. GitHub Pages alone cannot execute this function.
  */
 const HUBSPOT = 'https://api.hubapi.com';
+const HUBSPOT_CREDENTIAL = process.env.HUBSPOT_SERVICE_KEY || process.env.HUBSPOT_PRIVATE_APP_TOKEN;
 const PIPELINE_ID = '2673323738';
 const STAGE_NAME = 'Inbound Lead';
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'https://drvonkle.github.io').split(',').map(s => s.trim()).filter(Boolean);
@@ -15,7 +16,7 @@ function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 async function hs(path, method = 'GET', body) {
   const response = await fetch(HUBSPOT + path, {
     method,
-    headers: { Authorization: 'Bearer ' + process.env.HUBSPOT_PRIVATE_APP_TOKEN,
+    headers: { Authorization: 'Bearer ' + HUBSPOT_CREDENTIAL,
       'Content-Type': 'application/json' },
     ...(body ? { body: JSON.stringify(body) } : {})
   });
@@ -121,7 +122,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(allowed ? 204 : 403).end();
   if (req.method !== 'POST') return publicError(res, 405, 'Method not allowed.');
   if (!allowed) return publicError(res, 403, 'This form origin is not permitted.');
-  if (!process.env.HUBSPOT_PRIVATE_APP_TOKEN)
+  if (!HUBSPOT_CREDENTIAL)
     return publicError(res, 503, 'Lead intake is not configured yet.');
   const data = {
     firstname: clean(req.body?.firstname, 100), lastname: clean(req.body?.lastname, 100),
