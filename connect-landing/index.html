@@ -64,6 +64,25 @@ h1{color:#09388b}
 .cta.light{background:linear-gradient(100deg,#f48100,#ffa715);color:white}
 .cta.light:hover{background:#e98402}
 @media(max-width:700px){.hero:after{right:-25%;width:70%;opacity:.18;height:480px}.brand img{width:210px}.hero-inner{padding-top:48px;padding-bottom:120px}.navnote{display:none}}
+
+/* Branded, persistent thank-you screen. Confetti plays only after a successful submission. */
+.thankyou-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:24px;background:radial-gradient(ellipse at 50% 20%,rgba(32,100,179,.92),rgba(5,28,76,.95));backdrop-filter:blur(9px)}
+.thankyou-overlay[hidden]{display:none}
+.thankyou-card{position:relative;z-index:2;width:min(100%,600px);padding:clamp(30px,6vw,58px) clamp(23px,5.6vw,56px);border-radius:25px;text-align:center;background:linear-gradient(165deg,#fff 0%,#f7fbff 100%);border:1px solid #fff;box-shadow:0 28px 90px rgba(0,9,37,.33),inset 0 0 0 1px #deedf8}
+.thankyou-card:before{content:"";position:absolute;top:0;left:12%;right:12%;height:5px;border-radius:0 0 8px 8px;background:linear-gradient(90deg,#ff8800,#ffcb31,#21b6e8,#0844a4)}
+.thankyou-brand{width:min(230px,65%);height:auto;margin:0 auto 22px}
+.thankyou-check{width:70px;height:70px;border-radius:50%;background:linear-gradient(140deg,#eefff8,#dafff1);border:2px solid #a8edcf;display:grid;place-items:center;margin:0 auto 22px;color:#12865e}
+.thankyou-check svg{width:35px;height:35px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.thankyou-kicker{font-size:12px;font-weight:800;letter-spacing:2.5px;color:#db7c00;text-transform:uppercase;margin-bottom:11px}
+.thankyou-card h2{font-size:clamp(28px,4.5vw,39px);line-height:1.15;letter-spacing:-.04em;color:#073e94;margin:0 0 17px}
+.thankyou-card p{font-size:clamp(16px,2.1vw,18px);line-height:1.65;color:#536b85;margin:0 auto;max-width:420px}
+.thankyou-bottom{display:block;width:56px;height:4px;border-radius:10px;margin:27px auto 0;background:linear-gradient(90deg,#ff8c00,#1aace6)}
+.confetti-field{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.confetti-piece{position:absolute;top:-18vh;left:0;width:var(--width);height:var(--height);background:var(--piece-color);border-radius:1px;opacity:.95;animation:paycomp-confetti-fall var(--duration) linear var(--delay) infinite;will-change:transform}
+@keyframes paycomp-confetti-fall{0%{transform:translate3d(0,-10vh,0) rotate(0deg)}100%{transform:translate3d(var(--drift),135vh,0) rotate(var(--rotation))}}
+body.thankyou-open{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.confetti-piece{animation:none;opacity:0}}
+
 </style>
 </head>
 <body>
@@ -94,6 +113,20 @@ h1{color:#09388b}
 </section>
 </main>
 <footer class="footer"><span>© <span id="year">2026</span> PayComp. All rights reserved.</span><a href="https://www.paycomp.com" target="_blank" rel="noopener noreferrer">www.paycomp.com</a></footer>
+
+<div class="thankyou-overlay" id="thankyou-overlay" role="dialog" aria-modal="true" aria-labelledby="thankyou-title" aria-describedby="thankyou-copy" tabindex="-1" hidden>
+  <div class="confetti-field" id="confetti-field" aria-hidden="true"></div>
+  <div class="thankyou-card">
+    <img class="thankyou-brand" src="assets/paycomp-logo.svg" alt="PayComp">
+    <div class="thankyou-check" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="m5 12 4.2 4.2L19 6.5"/></svg>
+    </div>
+    <div class="thankyou-kicker">Request received</div>
+    <h2 id="thankyou-title">Thank you for your interest in PayComp!</h2>
+    <p id="thankyou-copy">We've received your information, and a member of our team will be reaching out shortly.</p>
+    <span class="thankyou-bottom" aria-hidden="true"></span>
+  </div>
+</div>
 <script>
 document.getElementById('year').textContent=new Date().getFullYear();
 const toggle=document.getElementById('toggle'),wrap=document.getElementById('followup'),form=document.getElementById('lead-form'),message=document.getElementById('message');
@@ -102,6 +135,35 @@ toggle.addEventListener('click',()=>{const show=!wrap.classList.contains('show')
 // When hosting the page on GitHub Pages, configure PAYCOMP_API_URL to point to that deployed backend.
 // Never put a HubSpot access token in this HTML or in a public GitHub file.
 const API_ENDPOINT = window.PAYCOMP_API_URL || (location.hostname.endsWith('.github.io') ? '' : '/api/lead');
+
+function showThankYouCelebration(){
+  const overlay=document.getElementById('thankyou-overlay');
+  const field=document.getElementById('confetti-field');
+  if(!overlay.hidden)return;
+  const colors=['#ff9000','#ffce2e','#1eb9ed','#0865c3','#fff','#ef6b55'];
+  const fragment=document.createDocumentFragment();
+  for(let i=0;i<90;i++){
+    const particle=document.createElement('span');
+    particle.className='confetti-piece';
+    particle.style.left=(Math.random()*100).toFixed(2)+'%';
+    particle.style.setProperty('--width',(5+Math.random()*7).toFixed(1)+'px');
+    particle.style.setProperty('--height',(7+Math.random()*9).toFixed(1)+'px');
+    particle.style.setProperty('--piece-color',colors[i%colors.length]);
+    particle.style.setProperty('--duration',(6+Math.random()*6).toFixed(2)+'s');
+    particle.style.setProperty('--delay',(-Math.random()*12).toFixed(2)+'s');
+    particle.style.setProperty('--drift',((Math.random()-.5)*260).toFixed(0)+'px');
+    particle.style.setProperty('--rotation',(300+Math.random()*780).toFixed(0)+'deg');
+    fragment.appendChild(particle);
+  }
+  field.appendChild(fragment);
+  overlay.hidden=false;
+  document.body.classList.add('thankyou-open');
+  document.querySelector('header').inert=true;
+  document.querySelector('main').inert=true;
+  document.querySelector('footer').inert=true;
+  overlay.focus({preventScroll:true});
+}
+
 const trap=document.createElement('input');trap.type='text';trap.name='website';trap.autocomplete='off';trap.tabIndex=-1;trap.setAttribute('aria-hidden','true');trap.style.cssText='position:absolute;left:-10000px;height:0;width:0;opacity:0';form.appendChild(trap);
 form.addEventListener('submit',async(e)=>{
   e.preventDefault();
@@ -115,8 +177,7 @@ form.addEventListener('submit',async(e)=>{
     const result=await response.json().catch(()=>({}));
     if(!response.ok || !result.success) throw new Error(result.message||'Submission failed');
     form.reset();
-    message.className='success';
-    message.textContent='Thank you. Your information has been submitted to PayComp.';
+    showThankYouCelebration();
   }catch(err){
     message.className='error';
     message.textContent='We could not send your information. Please try again or schedule a meeting.';
