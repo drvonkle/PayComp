@@ -6,7 +6,7 @@
 const HUBSPOT = 'https://api.hubapi.com';
 const HUBSPOT_CREDENTIAL = process.env.HUBSPOT_SERVICE_KEY || process.env.HUBSPOT_PRIVATE_APP_TOKEN;
 const PIPELINE_ID = '2673323738';
-const STAGE_NAME = 'Inbound Lead';
+const FOLLOW_UP_STAGE_ID = '4558346947'; // Verified IPPA - 2026 > Follow-Up Needed
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'https://drvonkle.github.io').split(',').map(s => s.trim()).filter(Boolean);
 function publicError(res, status, message) {
   res.status(status).json({ success: false, message });
@@ -37,24 +37,6 @@ async function findExact(object, property, value, limit = 10) {
     properties: [property], limit
   });
   return (found.results || []).filter(x => String(x.properties?.[property] || '').toLowerCase() === value.toLowerCase());
-}
-async function getInboundStage() {
-  const url = '/crm/v3/pipelines/0-136/' + PIPELINE_ID;
-  const pipeline = await hs(url);
-  const existing = (pipeline.stages || []).find(s => s.label?.trim().toLowerCase() === STAGE_NAME.toLowerCase());
-  if (existing) return existing.id;
-  if (process.env.AUTO_CREATE_INBOUND_STAGE !== 'true') return null;
-  // Provision the requested intake stage once; requires pipeline-editing permission.
-  try {
-    const added = await hs(url + '/stages', 'POST', {
-      label: STAGE_NAME, displayOrder: 0, metadata: { state: 'NEW' }
-    });
-    return added.id;
-  } catch (e) {
-    // Another request may have created it concurrently.
-    const fresh = await hs(url);
-    return (fresh.stages || []).find(s => s.label?.trim().toLowerCase() === STAGE_NAME.toLowerCase())?.id || null;
-  }
 }
 async function getOrCreateContact(data) {
   const matches = await findExact('contacts', 'email', data.email);
@@ -136,8 +118,6 @@ module.exports = async function handler(req, res) {
   try {
     if (!(await verifyTurnstile(req.body?.turnstileToken, req.headers['x-forwarded-for']?.split(',')[0])))
       return publicError(res, 400, 'Please complete the security check.');
-    const stageId = await getInboundStage();
-    if (!stageId) return publicError(res, 503, 'The IPPA inbound stage is not configured yet.');
     const contactId = await getOrCreateContact(data);
     const companyId = await getOrCreateCompany(data.company);
     await hs('/crm/v4/objects/contacts/' + contactId + '/associations/default/companies/' + companyId, 'PUT');
@@ -146,7 +126,7 @@ module.exports = async function handler(req, res) {
     const lead = await hs('/crm/v3/objects/leads', 'POST', {
       properties: {
         hs_lead_name: data.firstname + ' ' + data.lastname + ' - ' + data.company,
-        hs_pipeline: PIPELINE_ID, hs_pipeline_stage: stageId
+        hs_pipeline: PIPELINE_ID, hs_pipeline_stage: FOLLOW_UP_STAGE_ID
       },
       associations: [{
         to: { id: String(contactId) },
