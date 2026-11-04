@@ -235,24 +235,84 @@ function formatUSPhone(value){
   if(digits.length>6)result+='-'+digits.slice(6,10);
   return result;
 }
-function normalizePhone(){
+// Count only area-code and local-number digits to the left of the editing caret.
+function countPhoneDigitsBefore(value,caret){
+  const all=value.replace(/\D/g,'');
+  const hasCountryPrefix=/^\+1(?:\D|$)/.test(value)||(all.length===11&&all.startsWith('1'));
+  const before=value.slice(0,Math.max(0,caret)).replace(/\D/g,'');
+  return Math.max(0,before.length-(hasCountryPrefix&&before.startsWith('1')?1:0));
+}
+function phoneCaretPosition(formatted,digitCount){
+  if(!formatted)return 0;
+  const start=formatted.startsWith('+1 (')?4:0;
+  if(digitCount<=0)return start;
+  let seen=0;
+  for(let i=start;i<formatted.length;i++){
+    if(/\d/.test(formatted[i])&&++seen===digitCount)return i+1;
+  }
+  return formatted.length;
+}
+function normalizePhone(preserveCaret=false){
   const previous=phoneInput.value;
+  const cursor=phoneInput.selectionStart;
+  const digitsBefore=countPhoneDigitsBefore(previous,cursor??previous.length);
   const next=formatUSPhone(previous);
-  if(previous!==next) phoneInput.value=next;
+  if(previous!==next)phoneInput.value=next;
+  if(preserveCaret&&document.activeElement===phoneInput&&cursor!==null){
+    const target=phoneCaretPosition(next,digitsBefore);
+    phoneInput.setSelectionRange(target,target);
+  }
   phoneInput.setCustomValidity('');
 }
-phoneInput.addEventListener('input',normalizePhone);
-phoneInput.addEventListener('change',normalizePhone);
-phoneInput.addEventListener('focus',()=>{
-  normalizePhone();
-  if(!phoneInput.value)phoneInput.value='+1 (';
+// When the caret is beside ')' or '-', Backspace should remove the
+// previous *number*, not delete punctuation that the formatter re-inserts.
+phoneInput.addEventListener('beforeinput',e=>{
+  if(!e.cancelable||e.inputType!=='deleteContentBackward')return;
+  const caret=phoneInput.selectionStart;
+  if(caret===null||caret!==phoneInput.selectionEnd)return;
+  const value=phoneInput.value;
+  const firstDigit=value.startsWith('+1 (')?4:0;
+  if(caret<=firstDigit){
+    if(nationalPhoneDigits(value).length===0){
+      e.preventDefault();
+      phoneInput.value='';
+      phoneInput.setCustomValidity('');
+    }
+    return;
+  }
+  if(/\d/.test(value.charAt(caret-1)))return;
+  e.preventDefault();
+  const count=countPhoneDigitsBefore(value,caret);
+  if(count===0)return;
+  const digits=nationalPhoneDigits(value);
+  const edited=digits.slice(0,count-1)+digits.slice(count);
+  const formatted=formatUSPhone('+1 ('+edited);
+  phoneInput.value=formatted;
+  const target=phoneCaretPosition(formatted,count-1);
+  phoneInput.setSelectionRange(target,target);
+  phoneInput.setCustomValidity('');
 });
-phoneInput.addEventListener('blur',normalizePhone);
+phoneInput.addEventListener('input',()=>normalizePhone(true));
+phoneInput.addEventListener('change',()=>normalizePhone(true));
+phoneInput.addEventListener('focus',()=>{
+  normalizePhone(true);
+  if(!phoneInput.value){
+    phoneInput.value='+1 (';
+    phoneInput.setSelectionRange(4,4);
+  }
+});
+phoneInput.addEventListener('click',()=>{
+  if(phoneInput.value.startsWith('+1 (')&&
+     phoneInput.selectionStart===phoneInput.selectionEnd&&phoneInput.selectionStart<4){
+    phoneInput.setSelectionRange(4,4);
+  }
+});
+phoneInput.addEventListener('blur',()=>normalizePhone(false));
 // Browsers can populate autofill after load without firing an input event.
 window.addEventListener('pageshow',()=>{
-  normalizePhone();
-  setTimeout(normalizePhone,400);
-  setTimeout(normalizePhone,1400);
+  normalizePhone(false);
+  setTimeout(()=>normalizePhone(true),400);
+  setTimeout(()=>normalizePhone(true),1400);
 });
 
 const trap=document.createElement('input');trap.type='text';trap.name='website';trap.autocomplete='off';trap.tabIndex=-1;trap.setAttribute('aria-hidden','true');trap.style.cssText='position:absolute;left:-10000px;height:0;width:0;opacity:0';form.appendChild(trap);
