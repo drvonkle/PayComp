@@ -7,9 +7,9 @@ This directory contains a static landing page and a secure Vercel serverless API
 1. Validate first/last name, email, phone and company.
 2. Look up contact by email. Update an existing contact or create one.
 3. Match the company by exact name or create a company; associate it with the contact.
-4. Find the **Inbound Lead** stage in the **IPPA - 2026** lead pipeline (HubSpot pipeline ID `2673323738`). If `AUTO_CREATE_INBOUND_STAGE=true`, create the requested stage if it does not exist.
+4. Use the existing **Follow-Up Needed** stage (HubSpot stage ID `4558346947`) in **IPPA - 2026** (pipeline ID `2673323738`).
 5. If the contact already has a lead in this pipeline, do not create a duplicate or reset its stage.
-6. Otherwise create a new lead in the **Inbound Lead** stage, associated with the contact and company.
+6. Otherwise create a new lead in **Follow-Up Needed**, associated with the contact and company.
 
 No submitted information is sent to GitHub or stored in the browser after submission.
 
@@ -22,11 +22,10 @@ Deploy this folder as a **Vercel project connected to the existing `drvonkle/Pay
 In the Vercel project **Settings > Environment Variables**, add:
 
 - `HUBSPOT_SERVICE_KEY`: Secret HubSpot Service Key (Settings > Integrations > Service Keys). Existing legacy private-app tokens can alternatively be set as HUBSPOT_PRIVATE_APP_TOKEN. Set it in Vercel only; never write or share it in GitHub source or page HTML.
-- `AUTO_CREATE_INBOUND_STAGE=true`: Optional. Provisions the specified stage if missing, if the app has sufficient pipeline permissions. Otherwise create the stage in HubSpot first.
 - `ALLOWED_ORIGINS=https://drvonkle.github.io`: Optional. Add any additional external domains hosting the form, separated by commas.
 - `TURNSTILE_SECRET_KEY`: Optional; requires a corresponding Cloudflare Turnstile widget in the page to obtain visitor tokens.
 
-Grant the HubSpot Service Key least-privilege **read/write** CRM scopes for Contacts, Companies and Leads, plus lead pipeline read and (if auto-creating the stage) pipeline modification permissions. Use the Service Key as the Bearer token. Never paste it into chat or commit it to GitHub. Use only the scopes needed.
+Grant the HubSpot Service Key least-privilege **read/write** CRM scopes for Contacts, Companies and Leads, using existing pipeline/stage IDs. Use the Service Key as the Bearer token. Never paste it into chat or commit it to GitHub. Use only the scopes needed.
 
 The form automatically posts to `/api/lead` when opened at a `*.vercel.app` URL. To use the original GitHub Pages URL, after deployment set `window.PAYCOMP_API_URL = 'https://YOUR-VERCEL-DOMAIN.vercel.app/api/lead';` in a script tag before the page's existing submit script, and list the GitHub Pages origin in `ALLOWED_ORIGINS`.
 
