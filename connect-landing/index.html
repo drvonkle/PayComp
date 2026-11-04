@@ -1,81 +1,58 @@
 <!doctype html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f6faff">
-<meta name="description" content="Connect with PayComp. Schedule time with our President and CRO or request a personal follow-up.">
+<meta name="theme-color" content="#0b1c37">
+<meta name="description" content="Connect with PayComp. Schedule a meeting with Johnny Cardenas or request a follow-up.">
 <title>Let's Connect | PayComp</title>
 <style>
-:root{--navy:#082e78;--deep:#062d67;--blue:#075db7;--cyan:#11a9e3;--orange:#fc910b;--gold:#ffbb32;--ink:#17385d;--muted:#667b93;--line:#e0e9f3;--white:#fff}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:#f6f9fd;color:var(--ink);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:wait;opacity:.7}
-:focus-visible{outline:3px solid #48b6e9;outline-offset:3px}
-.hero{position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 85% 77%,#eaf4ff 0%,transparent 46%),linear-gradient(150deg,#fff 24%,#fafcff 71%,#f1f7fe 100%);border-bottom:1px solid #e3edf7}
-.hero:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#0b409b 0%,#14b4e7 54%,#fc9207 86%,#ffc746 100%)}
-.hero:after{content:"";position:absolute;right:-130px;bottom:-230px;width:640px;height:640px;border:1px solid rgba(7,90,184,.1);border-radius:50%;box-shadow:0 0 0 68px rgba(14,134,213,.023),0 0 0 142px rgba(11,96,190,.025);pointer-events:none;z-index:0}
-.nav{position:relative;z-index:2;max-width:1170px;margin:auto;padding:30px 34px 21px;display:flex;justify-content:space-between;align-items:center;gap:28px;border-bottom:1px solid #e6eef7}
-.brand-lockup{display:flex;flex-direction:column;align-items:flex-start;flex-shrink:0}
-.brand{display:block;line-height:0}
-.brand img{display:block;width:360px;height:auto;max-width:41vw}
-.brand-tagline{font-size:13px;font-weight:850;letter-spacing:.23em;color:#083983;line-height:1.25;margin:-2px 0 0 12px;white-space:nowrap}
-.nav-messaging{position:relative;text-align:right;padding:0 0 0 27px;max-width:410px;border-left:3px solid #f5a425}
-.nav-program{font-size:17px;line-height:1.3;font-weight:800;letter-spacing:-.015em;color:#093c88}
-.nav-motto{font-size:13px;line-height:1.5;color:#66809e;margin-top:4px}
-.hero-inner{position:relative;z-index:1;max-width:1170px;margin:0 auto;padding:56px 34px 117px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:32px;align-items:center}
-.hero-copy{position:relative;z-index:2}
-.eyebrow{display:flex;align-items:center;gap:11px;color:#0b66ae;letter-spacing:.18em;font-weight:800;font-size:11px;text-transform:uppercase}
-.eyebrow:before{content:"";width:28px;height:3px;background:var(--orange);border-radius:99px}
-h1{margin:13px 0 15px;font-size:clamp(48px,6.5vw,83px);line-height:1.05;letter-spacing:-.062em;font-weight:800;color:#082e75}
-h1 span{color:var(--orange)}
-.hero-inner>p,.hero-copy>p{margin:0;max-width:550px;font-size:17px;line-height:1.72;color:#617994}
-.hero-visual{min-height:270px;position:relative;display:flex;align-items:center;justify-content:center;overflow:visible}
-.visual-halo{width:min(100%,390px);aspect-ratio:1;max-height:326px;position:relative;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,#fff 0%,#f3f9ff 46%,rgba(222,238,253,.35) 64%,transparent 73%)}
-.visual-halo:before,.visual-halo:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(7,87,173,.11);inset:18px}
-.visual-halo:after{inset:50px;border-style:dashed;border-color:rgba(8,109,187,.18)}
-.visual-halo svg{display:block;width:91%;height:auto;position:relative;z-index:1}
-.visual-label{position:absolute;right:5px;bottom:8px;color:#517291;font-size:10px;font-weight:750;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
-.content{position:relative;z-index:4;max-width:1170px;margin:-57px auto 0;padding:0 34px 58px}
-.panel{background:var(--white);border:1px solid #e4ebf4;border-radius:25px;padding:34px 36px 37px;box-shadow:0 21px 60px rgba(10,52,105,.075)}
-.panel-head{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:24px}
-.panel-head h2{font-size:24px;font-weight:800;letter-spacing:-.035em;line-height:1.2;color:#113d80;margin:0 0 5px}
-.panel-head p{font-size:14px;color:#71839a;margin:0}
-.accent{width:65px;height:4px;border-radius:99px;background:linear-gradient(90deg,#0f65be,#18c0ee 56%,#ff9a0b);flex-shrink:0}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-.option{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:306px;padding:27px 28px 26px;background:#fff;border:1px solid #dfe8f2;border-radius:18px;box-shadow:0 3px 11px rgba(22,74,130,.025);transition:transform .18s,border-color .18s,box-shadow .18s}
-.option:before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,#06418f,#13a8e0)}
-.option:nth-child(2):before{background:linear-gradient(90deg,#f48b09,#ffc34f)}
-.option:hover{transform:translateY(-3px);border-color:#c9dbee;box-shadow:0 16px 30px rgba(19,78,143,.09)}
-.glyph{width:53px;height:53px;display:grid;place-items:center;margin:1px 0 17px;border-radius:13px;background:#eff6ff;color:#0b63b8}
-.option:nth-child(2) .glyph{background:#fff4e5;color:#d98107}
-.glyph svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.option h3{font-size:22px;letter-spacing:-.03em;line-height:1.24;margin:0 0 8px;color:#12396f}
-.option p{margin:0 0 22px;color:#6d8096;font-size:14px;line-height:1.64;max-width:360px}
-.cta{margin-top:auto;display:flex;justify-content:center;align-items:center;gap:10px;background:#0b4c9f;color:white;font-size:14px;font-weight:750;min-height:50px;padding:13px 19px;border:0;border-radius:10px;transition:background .17s,transform .17s}
-.cta:hover{background:#073976;transform:translateY(-1px)}
-.cta.light{background:linear-gradient(100deg,#f28b08,#f4a928);color:#fff}
-.cta.light:hover{background:#e77f00}
-.cta svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
-.form-wrap{margin-top:22px;display:none;border-radius:18px;padding:28px 29px;background:linear-gradient(180deg,#fafdff,#f4f9ff);border:1px solid #dce9f6}
-.form-wrap.show{display:block}
-.form-wrap h3{font-size:23px;line-height:1.25;margin:0 0 6px;color:#103b7e}
-.form-wrap>p{font-size:14px;margin:0 0 23px;color:#697f95}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:17px}
-.field{display:flex;flex-direction:column;gap:7px;color:#24456d;font-size:13px;font-weight:700}
-.field input{appearance:none;width:100%;border:1px solid #ccdae9;background:#fff;border-radius:9px;padding:13px 14px;line-height:1.4;color:#1b3b5e;outline:0;font-size:15px;font-weight:450;min-height:48px}
-.field input:focus{border-color:#1276cd;box-shadow:0 0 0 3px rgba(22,128,208,.12)}
-.field input::placeholder{color:#a7b5c6}
+
+:root{--navy:#0b1c37;--ink:#0c2140;--blue:#135bdb;--cyan:#21aef0;--orange:#fda11a;--muted:#61738d}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f7fc;color:var(--ink);font:16px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.65;cursor:wait}
+:focus-visible{outline:3px solid #24aeeb;outline-offset:3px}
+.hero{position:relative;isolation:isolate;min-height:488px;overflow:hidden;color:#fff;background:radial-gradient(ellipse 360px 260px at -9% 85%,rgba(5,138,253,.37),transparent 76%),radial-gradient(ellipse 345px 270px at 110% 66%,rgba(248,138,19,.22),transparent 73%),linear-gradient(118deg,#0a1a34 0%,#0d2140 62%,#102b50 100%)}
+.hero:before{content:"";position:absolute;right:-130px;bottom:-260px;width:660px;height:560px;border-radius:50%;border:1px solid rgba(255,157,29,.23);box-shadow:0 0 0 85px rgba(25,101,189,.055),0 0 0 160px rgba(20,93,188,.04);pointer-events:none}
+.hero:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;background-image:radial-gradient(#6fa6df 1px,transparent 1px);background-size:15px 15px;mask-image:radial-gradient(ellipse 175px 150px at 98% 21%,#000,transparent 95%),radial-gradient(ellipse 175px 160px at -1% 79%,#000,transparent 95%)}
+.topbar{max-width:1100px;margin:auto;padding:25px 32px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:18px;position:relative;z-index:2}
+.brand-logo{width:240px;max-width:53vw;height:auto;display:block}.brand-tag{display:block;margin:-2px 0 0 17px;color:#d7e6fb;letter-spacing:.23em;font-size:10px;font-weight:800}.site-link{font-size:13px;color:#e6effb;font-weight:650;margin-top:12px}.site-link:hover{text-decoration:underline}
+.hero-inner{position:relative;z-index:1;max-width:1100px;margin:auto;padding:58px 32px 133px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.2em;color:#a4caff;font-weight:800;margin:0 0 14px}
+.eyebrow:after{content:"";display:block;width:48px;height:3px;border-radius:2px;margin-top:14px;background:linear-gradient(90deg,#fd890b,#ffc43b)}
+h1{margin:0 0 17px;font-size:clamp(49px,6.2vw,77px);font-weight:800;line-height:1.08;letter-spacing:-.055em;color:#fff}
+.hero-description{font-size:17px;line-height:1.65;color:#d3e0f0;max-width:660px;margin:0}
+.hero-highlights{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:26px;font-size:12px;color:#b0c6e2}
+.hero-highlights .dot{background:#f5a11c;width:5px;height:5px;border-radius:50%}
+.main{position:relative;min-height:670px;background:linear-gradient(180deg,#eff5fe 0%,#f5f8fd 78%,#fff);padding:0 22px 95px;isolation:isolate}
+.main:after{content:"";position:absolute;right:-9%;bottom:0;width:50%;height:195px;border-radius:100% 0 0 0;background:linear-gradient(130deg,transparent,rgba(36,118,222,.04));z-index:0;pointer-events:none}
+.cards{position:relative;z-index:2;max-width:980px;margin:auto;transform:translateY(-80px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:stretch}
+.card{min-height:550px;display:flex;flex-direction:column;background:#fff;border:1px solid #dfe8f4;box-shadow:0 24px 44px rgba(12,40,83,.11);border-radius:17px;padding:32px 32px 28px}
+.glyph{display:grid;place-items:center;width:45px;height:45px;border-radius:12px;background:#e8f1ff;color:#185de0;margin-bottom:19px}
+.glyph svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card h2{font-size:25px;line-height:1.2;letter-spacing:-.035em;color:#0f2341;margin:0 0 10px}
+.card>p{font-size:14px;line-height:1.62;color:#566983;margin:0 0 18px}
+.profile{display:flex;align-items:center;gap:12px;border:1px solid #e4ebf7;background:#f2f6fc;border-radius:11px;padding:13px 14px;margin:5px 0 24px}
+.avatar{border-radius:50%;width:42px;height:42px;display:grid;place-items:center;background:#0d2446;color:#fff;font-size:13px;font-weight:750;flex:none}
+.profile strong{display:block;font-size:13px;color:#152a4a}.profile small{display:block;font-size:11px;color:#7285a0;margin-top:2px}
+.meeting-actions{margin-top:auto}
+.cta{display:flex;align-items:center;justify-content:center;min-height:49px;width:100%;background:#1457d8;border:0;border-radius:9px;padding:12px 17px;font-size:14px;font-weight:750;color:#fff;transition:background .15s}
+.cta:hover{background:#0f46ba}.cta.navy{background:#0b1c38}.cta.navy:hover{background:#14315a}
+.footnote{font-size:11px;text-align:center;color:#8295ae;margin-top:12px;line-height:1.5}
+#lead-form{display:flex;flex:1;flex-direction:column}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:13px;row-gap:14px}
+.field{font-size:11px;font-weight:700;color:#2b405d;display:flex;flex-direction:column;gap:6px;line-height:1.4}
 .field.full{grid-column:1/-1}
-.form-foot{display:flex;gap:18px;align-items:center;justify-content:space-between;margin-top:24px}
-.form-foot small{font-size:12px;color:#8192a4;line-height:1.5;max-width:415px}
-#message{font-size:14px;margin:14px 0 0;display:none}
-#message.error{display:block;color:#b03b36}#message.success{display:block;color:#177249}
-.footer{max-width:1170px;margin:0 auto;padding:0 34px 35px;color:#8a99ab;font-size:12px;display:flex;gap:20px;justify-content:space-between}
-.footer a:hover{color:#0f65ae}
-@media(max-width:850px){.brand img{width:295px;max-width:43vw}.brand-tagline{font-size:11px}.nav-program{font-size:15px}.nav-motto{font-size:12px}.hero-inner{grid-template-columns:1fr 270px;padding-bottom:108px}.hero-visual{min-height:225px}.visual-label{right:-8px}.panel{padding:26px}.option{padding:24px}}
-@media(max-width:680px){.nav{padding:24px 20px 21px;align-items:flex-start;gap:12px}.brand img{width:234px;max-width:53vw}.brand-tagline{font-size:10px;letter-spacing:.14em;margin-left:6px}.nav-messaging{max-width:45vw;padding:2px 0 0 12px;border-left-width:2px}.nav-program{font-size:12px}.nav-motto{font-size:10px;line-height:1.35}.hero-inner{padding:51px 22px 112px;display:block}.hero-copy>p{font-size:15px;max-width:490px}.hero-visual{display:none}h1{font-size:clamp(47px,10.5vw,68px)}.content{padding:0 15px 44px;margin-top:-58px}.panel{padding:23px 19px;border-radius:19px}.panel-head{gap:8px;align-items:flex-start}.panel-head h2{font-size:21px}.panel-head p{font-size:13px}.accent{width:38px;margin-top:7px}.cards{grid-template-columns:1fr;gap:14px}.option{min-height:0;padding:22px}.option p{margin-bottom:24px}.form-wrap{padding:20px}.fields{grid-template-columns:1fr}.field.full{grid-column:1/-1}.form-foot{align-items:stretch;flex-direction:column}.form-foot .cta{width:100%}.footer{padding:0 20px 25px;flex-wrap:wrap;gap:8px}}
-@media(max-width:380px){.nav{align-items:flex-start}.brand img{width:190px}.brand-tagline{font-size:9px}.nav-program{font-size:11px}.nav-motto{font-size:10px}h1{font-size:47px}}
+.field input{font-size:14px;font-weight:400;outline:none;width:100%;min-width:0;min-height:42px;padding:10px 12px;border-radius:9px;background:#fff;color:#142e4f;border:1px solid #cfdaea}
+.field input:focus{border-color:#2479e0;box-shadow:0 0 0 3px rgba(42,119,218,.13)}
+.field input::placeholder{color:#adbbce}
+.phone-hint{font-size:10px;font-weight:500;color:#8091aa}
+.form-actions{margin-top:auto}
+.consent{font-size:11px;line-height:1.6;color:#8b99ac;margin:18px 0 17px}
+#message{font-size:13px;margin:10px 0 0;display:none}#message.error{color:#b82d30;display:block}#message.success{color:#167a4c;display:block}
+.footer{border-top:1px solid #e4ebf6;background:#fff;padding:22px max(22px,calc((100vw - 980px)/2)) 26px;display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:12px;color:#8193ab}
+.footer a{color:#1d59c0;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:850px){.cards{gap:16px}.card{padding:25px 23px;min-height:565px}.card h2{font-size:23px}}
+@media(max-width:650px){.hero{min-height:435px}.topbar{padding:22px 19px 0}.brand-logo{width:188px}.brand-tag{font-size:8px;margin-left:9px}.site-link{font-size:11px}.hero-inner{padding:61px 19px 127px}.eyebrow{font-size:11px}h1{font-size:51px}.hero-description{font-size:15px}.hero-highlights{font-size:11px;margin-top:23px}.cards{grid-template-columns:1fr;gap:17px;max-width:490px;transform:translateY(-72px)}.main{min-height:0;padding:0 14px 0}.card{min-height:0;padding:25px}.card.meeting{min-height:365px}.card.followup{min-height:495px}.footer{padding:20px;flex-wrap:wrap}.hero:before{right:-330px}}
+@media(max-width:380px){.brand-logo{width:150px}.site-link{font-size:10px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.hero-inner{padding-top:51px}h1{font-size:46px}}
 
 /* Branded, persistent thank-you screen. Confetti plays only after a successful submission. */
 .thankyou-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:24px;background:radial-gradient(ellipse at 50% 20%,rgba(32,100,179,.92),rgba(5,28,76,.95));backdrop-filter:blur(9px)}
@@ -97,77 +74,55 @@ body.thankyou-open{overflow:hidden}
 
 
 
-</style>
-</head>
+
+</style></head>
 <body>
 <header class="hero">
-<nav class="nav" aria-label="PayComp header">
-  <div class="brand-lockup">
-    <a href="https://www.paycomp.com" class="brand" aria-label="PayComp home"><img src="assets/paycomp-wordmark.svg" alt="PayComp"></a>
-    <span class="brand-tagline">PAYROLL. SIMPLIFIED.</span>
-  </div>
-  <div class="nav-messaging">
-    <div class="nav-program">Pay-As-You-Go Integration</div>
-    <div class="nav-motto">Connecting people. Simplifying payroll.</div>
-  </div>
+<nav class="topbar" aria-label="PayComp header">
+  <div><a href="https://www.paycomp.com" aria-label="PayComp home"><img class="brand-logo" src="assets/paycomp-header-logo.svg" alt="PayComp"></a><span class="brand-tag">PAYROLL. SIMPLIFIED.</span></div>
+  <a class="site-link" href="https://www.paycomp.com">www.paycomp.com</a>
 </nav>
 <div class="hero-inner">
-  <div class="hero-copy">
-    <div class="eyebrow">Connecting with PayComp</div>
-    <h1>Let's connect<span>.</span></h1>
-    <p>Whether you're ready to schedule a conversation or would prefer that we reach out, we're here to make getting started simple.</p>
-  </div>
-  <div class="hero-visual" aria-hidden="true">
-    <div class="visual-halo">
-      <svg viewBox="0 0 390 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M91 168 C133 79 264 58 306 158" stroke="#cce6fb" stroke-width="4" stroke-linecap="round" stroke-dasharray="5 12"/>
-        <path d="M90 172 C132 249 268 262 305 167" stroke="#f6c476" stroke-width="4" stroke-linecap="round" stroke-dasharray="5 12"/>
-        <path d="M100 157 L185 104 L285 161 L183 226 Z" stroke="#95c5ee" stroke-width="3" stroke-linejoin="round" opacity=".7"/>
-        <circle cx="185" cy="104" r="25" fill="#fff" stroke="#cbdff4" stroke-width="3"/>
-        <circle cx="100" cy="157" r="26" fill="#fff" stroke="#cbdff4" stroke-width="3"/>
-        <circle cx="285" cy="161" r="26" fill="#fff" stroke="#ffb43b" stroke-width="3"/>
-        <circle cx="183" cy="226" r="25" fill="#fff" stroke="#cbdff4" stroke-width="3"/>
-        <circle cx="185" cy="104" r="9" fill="#119fe0"/>
-        <circle cx="100" cy="157" r="9" fill="#0a4395"/>
-        <circle cx="285" cy="161" r="9" fill="#f49b13"/>
-        <circle cx="183" cy="226" r="9" fill="#0b67b9"/>
-        <circle cx="193" cy="165" r="48" fill="#fff" stroke="#d5e8f8" stroke-width="2"/>
-        <circle cx="193" cy="165" r="36" fill="#ebf6ff"/>
-        <path d="M176 179 C181 167 206 167 211 179" stroke="#0858aa" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="193" cy="154" r="12" stroke="#0858aa" stroke-width="5"/>
-        <path d="M318 85 C326 85 326 85 326 93 C326 85 326 85 334 85 C326 85 326 85 326 77 C326 85 326 85 318 85" fill="#f5a427"/>
-        <circle cx="73" cy="246" r="6" fill="#3da8e0" opacity=".45"/>
-        <circle cx="314" cy="237" r="4" fill="#f5ae32" opacity=".65"/>
-      </svg>
-    </div>
-    <span class="visual-label">People first. Simplicity always.</span>
-  </div>
+  <div class="eyebrow">Pay-as-you-go integration</div>
+  <h1>Let's connect.</h1>
+  <p class="hero-description">Whether you're ready to schedule a conversation or would prefer that we reach out, we're here to make getting started simple.</p>
+  <div class="hero-highlights"><span>Pay-as-you-go workers' comp</span><span class="dot" aria-hidden="true"></span><span>People first. Simplicity always.</span></div>
 </div>
 </header>
-<main class="content">
-<section class="panel" aria-label="Contact options">
-<div class="panel-head"><div><h2>How would you like to connect?</h2><p>Choose one of the options below to get started.</p></div><div class="accent" aria-hidden="true"></div></div>
+<main class="main">
 <div class="cards">
-<article class="option"><div class="glyph"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3"/></svg></div><h3>Book a Meeting</h3><p>Schedule a one-on-one conversation directly with Johnny Cardenas, President & CRO.</p><a class="cta light" href="https://meetings-na2.hubspot.com/johnny-cardenas/johnnys-personal-calendar" target="_blank" rel="noopener noreferrer">Schedule a Meeting <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></article>
-<article class="option"><div class="glyph"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M6.5 18c.6-3 2.5-4.5 5.5-4.5s4.9 1.5 5.5 4.5M8 2v4M16 2v4"/></svg></div><h3>Request a Follow-Up</h3><p>Leave your contact information and a member of the PayComp team will reach out to you.</p><button class="cta" type="button" id="toggle" aria-expanded="false" aria-controls="followup">Submit Your Information <svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></article>
+  <section class="card meeting" aria-labelledby="meeting-title">
+    <div class="glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h4"/></svg></div>
+    <h2 id="meeting-title">Book a meeting</h2>
+    <p>Schedule a one-on-one conversation directly with our President &amp; CRO.</p>
+    <div class="profile"><div class="avatar" aria-hidden="true">JC</div><div><strong>Johnny Cardenas</strong><small>President &amp; CRO, PayComp</small></div></div>
+    <div class="meeting-actions">
+      <a class="cta" href="https://meetings-na2.hubspot.com/johnny-cardenas/johnnys-personal-calendar" target="_blank" rel="noopener noreferrer">Schedule a meeting</a>
+      <div class="footnote">Opens Johnny's live calendar — pick a time that works for you.</div>
+    </div>
+  </section>
+  <section class="card followup" aria-labelledby="followup-title">
+    <div class="glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></div>
+    <h2 id="followup-title">Request a follow-up</h2>
+    <p>Leave your details and a member of the PayComp team will reach out to you.</p>
+    <form id="lead-form">
+      <div class="fields">
+        <label class="field">First name <input name="firstname" autocomplete="given-name" required maxlength="100"></label>
+        <label class="field">Last name <input name="lastname" autocomplete="family-name" required maxlength="100"></label>
+        <label class="field">Email address <input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+        <label class="field">Phone number — U.S. (+1)<input name="phone" type="tel" id="phone" autocomplete="tel" inputmode="tel" placeholder="+1 (555) 123-4567" required maxlength="17" aria-describedby="phone-help"><span class="phone-hint" id="phone-help">10-digit U.S. number</span></label>
+        <label class="field full">Company name <input name="company" autocomplete="organization" required maxlength="200"></label>
+      </div>
+      <div class="form-actions">
+        <p class="consent">By submitting, you agree that PayComp may contact you about your inquiry. Your information will be handled in accordance with our privacy practices.</p>
+        <button class="cta navy" id="submit" type="submit">Request Follow-Up</button>
+        <p role="status" aria-live="polite" id="message"></p>
+      </div>
+    </form>
+  </section>
 </div>
-<div class="form-wrap" id="followup"><h3>Tell us how to reach you</h3><p>Fill out the details below and we'll follow up.</p>
-<form id="lead-form">
-<div class="fields">
-<label class="field">First Name <input name="firstname" autocomplete="given-name" required maxlength="100"></label>
-<label class="field">Last Name <input name="lastname" autocomplete="family-name" required maxlength="100"></label>
-<label class="field">Email Address <input type="email" name="email" autocomplete="email" required maxlength="254"></label>
-<label class="field">Phone Number <input type="tel" name="phone" id="phone" autocomplete="tel" inputmode="tel" placeholder="+1 (555) 123-4567" required maxlength="17" aria-describedby="phone-help"><span id="phone-help" style="font-size:11px;color:#8296a8;font-weight:500">U.S. phone number (+1)</span></label>
-<label class="field full">Company Name <input name="company" autocomplete="organization" required maxlength="200"></label>
-</div>
-<div class="form-foot"><small>By submitting, you agree that PayComp may contact you about your inquiry. Your information will be handled in accordance with our privacy practices.</small><button class="cta" type="submit" id="submit" style="margin-top:0;min-width:190px">Request Follow-Up</button></div>
-<p role="status" aria-live="polite" id="message"></p>
-</form>
-</div>
-</section>
 </main>
-<footer class="footer"><span>© <span id="year">2026</span> PayComp. All rights reserved.</span><a href="https://www.paycomp.com" target="_blank" rel="noopener noreferrer">www.paycomp.com</a></footer>
-
+<footer class="footer"><span>© <span id="year">2026</span> PayComp. All rights reserved.</span><a href="https://www.paycomp.com">www.paycomp.com</a></footer>
 <div class="thankyou-overlay" id="thankyou-overlay" role="dialog" aria-modal="true" aria-labelledby="thankyou-title" aria-describedby="thankyou-copy" tabindex="-1" hidden>
   <div class="confetti-field" id="confetti-field" aria-hidden="true"></div>
   <div class="thankyou-card">
@@ -181,10 +136,10 @@ body.thankyou-open{overflow:hidden}
     <span class="thankyou-bottom" aria-hidden="true"></span>
   </div>
 </div>
+
 <script>
 document.getElementById('year').textContent=new Date().getFullYear();
-const toggle=document.getElementById('toggle'),wrap=document.getElementById('followup'),form=document.getElementById('lead-form'),message=document.getElementById('message');
-toggle.addEventListener('click',()=>{const show=!wrap.classList.contains('show');wrap.classList.toggle('show',show);toggle.setAttribute('aria-expanded',String(show));if(show){wrap.scrollIntoView({behavior:'smooth',block:'nearest'});setTimeout(()=>wrap.querySelector('input').focus({preventScroll:true}),250)}});
+const form=document.getElementById('lead-form'),message=document.getElementById('message');
 // On the Vercel deployment the secure HubSpot API is served at /api/lead.
 // When hosting the page on GitHub Pages, configure PAYCOMP_API_URL to point to that deployed backend.
 // Never put a HubSpot access token in this HTML or in a public GitHub file.
