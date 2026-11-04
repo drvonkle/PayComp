@@ -30,9 +30,9 @@ h1{margin:0 0 17px;font-size:clamp(49px,6.2vw,77px);font-weight:800;line-height:
 .glyph svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .card h2{font-size:25px;line-height:1.2;letter-spacing:-.035em;color:#0f2341;margin:0 0 10px}
 .card>p{font-size:14px;line-height:1.62;color:#566983;margin:0 0 18px}
-.profile{display:flex;align-items:center;gap:12px;border:1px solid #e4ebf7;background:#f2f6fc;border-radius:11px;padding:13px 14px;margin:5px 0 24px}
-.avatar{border-radius:50%;width:42px;height:42px;display:block;object-fit:cover;object-position:center;border:2px solid #fff;box-shadow:0 0 0 1px #dce6f4;flex:none}
-.profile strong{display:block;font-size:13px;color:#152a4a}.profile small{display:block;font-size:11px;color:#7285a0;margin-top:2px}
+.profile{display:flex;flex:1;align-items:center;justify-content:center;gap:20px;min-height:170px;border:1px solid #dfe9f7;background:linear-gradient(130deg,#f0f6ff 0%,#f7faff 100%);border-radius:13px;padding:22px 18px;margin:8px 0 21px}
+.avatar{border-radius:50%;width:94px;height:94px;display:block;object-fit:cover;object-position:center;border:3px solid #fff;box-shadow:0 0 0 1px #dce6f4,0 5px 16px rgba(12,52,116,.12);flex:none}
+.profile strong{display:block;font-size:17px;line-height:1.35;color:#152a4a;letter-spacing:-.02em}.profile small{display:block;font-size:12px;line-height:1.5;color:#7285a0;margin-top:5px}
 .meeting-actions{margin-top:auto}
 .cta{display:flex;align-items:center;justify-content:center;min-height:49px;width:100%;background:#1457d8;border:0;border-radius:9px;padding:12px 17px;font-size:14px;font-weight:750;color:#fff;transition:background .15s}
 .cta:hover{background:#0f46ba}.cta.navy{background:#0b1c38}.cta.navy:hover{background:#14315a}
@@ -75,6 +75,8 @@ body.thankyou-open{overflow:hidden}
 
 
 
+
+@media(max-width:380px){.profile{gap:12px;padding:17px 12px}.avatar{width:76px;height:76px}.profile strong{font-size:15px}.profile small{font-size:11px}}
 </style></head>
 <body>
 <header class="hero">
@@ -95,7 +97,7 @@ body.thankyou-open{overflow:hidden}
     <div class="glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h4"/></svg></div>
     <h2 id="meeting-title">Book a meeting</h2>
     <p>Schedule a one-on-one conversation directly with our President &amp; CRO.</p>
-    <div class="profile"><img class="avatar" src="assets/johnny-cardenas.jpg" alt="Johnny Cardenas" width="42" height="42" loading="lazy" decoding="async"><div><strong>Johnny Cardenas</strong><small>President &amp; CRO, PayComp</small></div></div>
+    <div class="profile"><img class="avatar" src="assets/johnny-cardenas.jpg" alt="Johnny Cardenas" width="94" height="94" loading="lazy" decoding="async"><div><strong>Johnny Cardenas</strong><small>President &amp; CRO, PayComp</small></div></div>
     <div class="meeting-actions">
       <a class="cta" href="https://meetings-na2.hubspot.com/johnny-cardenas/johnnys-personal-calendar" target="_blank" rel="noopener noreferrer">Schedule a meeting</a>
       <div class="footnote">Opens Johnny's live calendar — pick a time that works for you.</div>
