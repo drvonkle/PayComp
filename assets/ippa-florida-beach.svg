@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#8dd9fa"/><stop offset=".58" stop-color="#d4f2f8"/><stop offset="1" stop-color="#ffe0a4"/></linearGradient><linearGradient id="sea" x2="0" y2="1"><stop stop-color="#24bbcf"/><stop offset="1" stop-color="#087dba"/></linearGradient><linearGradient id="sand" x2="0" y2="1"><stop stop-color="#fff0c3"/><stop offset="1" stop-color="#eab66f"/></linearGradient><radialGradient id="glow"><stop stop-color="#fff8cc" stop-opacity=".75"/><stop offset="1" stop-color="#fff8cc" stop-opacity="0"/></radialGradient></defs>
+<rect width="1600" height="520" fill="url(#sky)"/>
+<circle cx="1295" cy="138" r="150" fill="url(#glow)"/><circle cx="1295" cy="138" r="55" fill="#fff7dc" opacity=".9"/>
+<path d="M0 272 Q450 257 800 278 T1600 269 L1600 422 0 422Z" fill="url(#sea)"/>
+<path d="M0 330 Q320 316 610 335 T1200 330 T1600 323" stroke="#e8ffff" stroke-opacity=".53" stroke-width="7" fill="none"/>
+<path d="M0 381 Q280 362 615 382 T1170 380 T1600 370" stroke="#f7ffff" stroke-opacity=".46" stroke-width="6" fill="none"/>
+<path d="M0 426 Q340 386 675 425 T1300 415 T1600 405 L1600 520 0 520Z" fill="url(#sand)"/>
+<path d="M0 431 Q350 391 700 434 T1350 420 T1600 414" fill="none" stroke="#fffce9" stroke-width="9" opacity=".9"/>
+<g opacity=".3" fill="#fff"><ellipse cx="1100" cy="87" rx="95" ry="17"/><ellipse cx="1170" cy="81" rx="62" ry="13"/><ellipse cx="900" cy="126" rx="85" ry="14"/></g>
+<g transform="translate(1480 393)" opacity=".76" fill="none" stroke="#176e75" stroke-linecap="round">
+<path d="M17 140 Q-24 3 -2 -154" stroke-width="18"/>
+<path d="M-2 -154 Q-80 -179 -177 -125 M-2 -154 Q-75 -218 -158 -226 M-2 -154 Q-9 -244 28 -260 M-2 -154 Q69 -222 147 -219 M-2 -154 Q84 -169 165 -113 M-2 -154 Q64 -116 92 -54 M-2 -154 Q-76 -133 -126 -54" stroke-width="18"/>
+<path d="M-2 -154 Q-95 -192 -177 -125 M-2 -154 Q-68 -237 -158 -226 M-2 -154 Q-9 -239 28 -260 M-2 -154 Q76 -231 147 -219 M-2 -154 Q95 -183 165 -113" stroke="#3a998c" stroke-width="7"/>
+</g>
+<g transform="translate(1195 446) scale(.47)" opacity=".55" fill="none" stroke="#167b80" stroke-linecap="round"><path d="M0 140 Q8 -16 10 -132" stroke-width="22"/><path d="M10 -132 Q-72 -164 -146 -118 M10 -132 Q-45 -212 -104 -208 M10 -132 Q24 -230 66 -227 M10 -132 Q99 -182 157 -134 M10 -132 Q78 -98 96 -37" stroke-width="19"/></g>
+</svg>
