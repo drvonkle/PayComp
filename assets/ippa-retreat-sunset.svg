@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 520" preserveAspectRatio="xMidYMid slice">
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop offset="0" stop-color="#25164d"/><stop offset=".25" stop-color="#5d2672"/><stop offset=".47" stop-color="#b43f75"/><stop offset=".68" stop-color="#ee6248"/><stop offset=".85" stop-color="#ff9a42"/><stop offset="1" stop-color="#4a275b"/></linearGradient>
+<linearGradient id="water" x2="0" y2="1"><stop stop-color="#db4f7b"/><stop offset=".38" stop-color="#ec6655"/><stop offset=".8" stop-color="#692b6b"/><stop offset="1" stop-color="#301b5b"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ffbc60" stop-opacity=".98"/><stop offset=".45" stop-color="#ff8247" stop-opacity=".5"/><stop offset="1" stop-color="#ff8042" stop-opacity="0"/></radialGradient>
+<filter id="blur"><feGaussianBlur stdDeviation="19"/></filter>
+</defs>
+<rect width="1600" height="520" fill="url(#sky)"/>
+<ellipse cx="1050" cy="320" rx="570" ry="215" fill="url(#glow)" opacity=".65"/>
+<path d="M0 58 Q120 30 300 65 T730 62 T1200 51 T1600 55" stroke="#3a205b" stroke-width="35" opacity=".37" fill="none" filter="url(#blur)"/>
+<path d="M-50 144 Q300 95 590 141 T1230 123 T1670 146" stroke="#59215f" stroke-width="25" opacity=".40" fill="none" filter="url(#blur)"/>
+<path d="M-40 201 Q270 168 540 204 T1120 194 T1670 195" stroke="#712255" stroke-width="28" opacity=".3" fill="none" filter="url(#blur)"/>
+<path d="M-50 278 Q350 258 760 284 T1610 269" stroke="#ffb46c" stroke-width="17" opacity=".33" fill="none" filter="url(#blur)"/>
+<path d="M0 337 Q400 328 820 338 T1600 333 L1600 520 0 520Z" fill="url(#water)"/>
+<path d="M0 337 Q400 330 820 339 T1600 333" stroke="#ffa15c" stroke-width="4" opacity=".7" fill="none"/>
+<g stroke-linecap="round" fill="none">
+<path d="M480 382h350 M920 385h320 M570 414h550 M225 448h900 M615 480h850" stroke="#ff9b63" stroke-width="8" opacity=".32"/>
+<path d="M160 372h420 M1035 370h360 M390 394h540 M950 423h600 M100 465h800" stroke="#ef6c87" stroke-width="4" opacity=".42"/>
+<path d="M0 497h500 M600 506h380 M1140 497h470" stroke="#f18360" stroke-width="5" opacity=".3"/>
+</g>
+<g opacity=".25" filter="url(#blur)"><ellipse cx="200" cy="327" rx="280" ry="18" fill="#ffd18c"/><ellipse cx="1240" cy="310" rx="370" ry="22" fill="#ffb76b"/></g>
+</svg>
