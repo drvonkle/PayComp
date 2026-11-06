@@ -1,4 +1,4 @@
-name: Deploy PayComp Resource Hub to GitHub Pages
+name: Redirect legacy PayComp GitHub Pages URL to Vercel
 
 on:
   push:
@@ -25,10 +25,44 @@ jobs:
         uses: actions/checkout@v6
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload artifact
+      - name: Build redirect-only Pages artifact
+        shell: bash
+        run: |
+          mkdir -p .pages-redirect
+          cat > .pages-redirect/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <title>PayComp Resource Hub — Redirecting</title>
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <meta http-equiv="refresh" content="0; url=https://paycomp-resource-hub.vercel.app/">
+            <meta name="robots" content="noindex,follow">
+            <link rel="canonical" href="https://paycomp-resource-hub.vercel.app/">
+            <style>body{font-family:Arial,sans-serif;margin:12vh auto;max-width:650px;padding:24px;color:#061a44}a{color:#0b57d0}</style>
+            <script>
+              (function () {
+                var prefix = "/PayComp";
+                var path = window.location.pathname;
+                var suffix = path === prefix || path === prefix + "/" ? "/" : (path.indexOf(prefix + "/") === 0 ? path.substring(prefix.length) : "/");
+                var destination = "https://paycomp-resource-hub.vercel.app" + suffix + window.location.search + window.location.hash;
+                window.location.replace(destination);
+              })();
+            </script>
+          </head>
+          <body>
+            <h1>PayComp Resource Hub has moved</h1>
+            <p>Redirecting to the current Resource Hub.</p>
+            <p><a href="https://paycomp-resource-hub.vercel.app/">Open the PayComp Resource Hub</a></p>
+          </body>
+          </html>
+          HTML
+          cp .pages-redirect/index.html .pages-redirect/404.html
+          touch .pages-redirect/.nojekyll
+      - name: Upload redirect-only artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: '.'
-      - name: Deploy to GitHub Pages
+          path: '.pages-redirect'
+      - name: Deploy GitHub Pages redirect
         id: deployment
         uses: actions/deploy-pages@v4
