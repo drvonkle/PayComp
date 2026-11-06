@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#061a44">
+<title>IPPA 2026 | Troy &amp; Johnny Business Cards</title>
+<style>
+:root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#092755;background:#f4f7fc}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:radial-gradient(circle at 10% 10%,#dbf4ff,transparent 33%),radial-gradient(circle at 95% 0,#fff2d6,transparent 30%),#f4f7fc}
+header{background:linear-gradient(112deg,#061a44,#114a93);padding:24px max(20px,calc((100vw - 1660px)/2));color:white;box-shadow:0 8px 23px #061a4420}
+.top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+h1{font-size:clamp(24px,2.7vw,40px);letter-spacing:-.03em;margin:0}
+header p{margin:8px 0 0;color:#c7e5fa}
+.back{display:inline-flex;text-decoration:none;color:#fff;border:1px solid #ffffff65;border-radius:11px;padding:11px 15px;font-weight:650}
+main{width:min(1760px,96vw);margin:clamp(20px,3vw,44px) auto}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.5vw,40px)}
+.person{min-width:0}
+.person h2{font-size:22px;letter-spacing:-.025em;margin:0 0 14px;padding-left:3px}
+.visual{display:block;cursor:zoom-in;padding:0;width:100%;border:1px solid #d2deed;border-radius:19px;background:#fff;overflow:hidden;box-shadow:0 18px 45px #08264a22;transition:transform .2s,box-shadow .2s}
+.visual:hover{transform:translateY(-4px);box-shadow:0 24px 50px #08264a36}
+.visual img{display:block;width:100%;height:auto;object-fit:contain}
+.hint{margin:12px 3px;color:#587191;font-size:14px}
+dialog{border:0;border-radius:15px;padding:12px;background:#fff;box-shadow:0 30px 90px #0007;max-width:96vw;max-height:96vh}
+dialog::backdrop{background:rgba(1,13,32,.82);backdrop-filter:blur(6px)}
+dialog img{display:block;width:min(1400px,92vw);height:auto;max-height:83vh;object-fit:contain}
+dialog .close{display:block;margin:0 0 12px auto;background:#061a44;color:#fff;border:0;border-radius:8px;padding:10px 15px;cursor:pointer;font-size:15px;font-weight:700}
+@media(max-width:860px){.cards{grid-template-columns:1fr;max-width:760px;margin:auto}main{width:min(94vw,1760px)}header{padding:22px}}
+@media(prefers-reduced-motion:reduce){.visual{transition:none}.visual:hover{transform:none}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><h1>Troy &amp; Johnny Business Cards</h1><p>IPPA 2026 · PayComp · Owners &amp; Executives Strategic Retreat</p></div><a class="back" href="../index.html">← Back to Resource Hub</a></div></header>
+<main>
+<section class="cards" aria-label="PayComp business cards">
+<div class="person"><h2>Troy Hefner</h2><button class="visual" type="button" data-card="../../assets/ippa/troy-hefner-business-card.png" aria-label="Enlarge Troy Hefner business card"><img src="../assets/ippa/troy-hefner-business-card.png" alt="PayComp business card for Troy Hefner, Chief Executive Officer and Founder, including contact information and QR code" loading="eager"></button><p class="hint">Click the card to enlarge.</p></div>
+<div class="person"><h2>Johnny Cardenas, MBA</h2><button class="visual" type="button" data-card="../../assets/ippa/johnny-cardenas-business-card.png" aria-label="Enlarge Johnny Cardenas business card"><img src="../assets/ippa/johnny-cardenas-business-card.png" alt="PayComp business card for Johnny Cardenas, MBA, Chief Revenue Officer and President, including contact information and QR code" loading="eager"></button><p class="hint">Click the card to enlarge.</p></div>
+</section>
+</main>
+<dialog id="fullCard" aria-label="Enlarged business card"><button class="close" type="button">Close ×</button><img src="" alt="Full size PayComp business card"></dialog>
+<script>
+const dialog=document.getElementById('fullCard');
+document.querySelectorAll('.visual').forEach(btn=>btn.addEventListener('click',()=>{dialog.querySelector('img').src=btn.querySelector('img').src;dialog.querySelector('img').alt=btn.querySelector('img').alt;dialog.showModal()}));
+dialog.querySelector('.close').addEventListener('click',()=>dialog.close());
+dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
+</script>
+</body>
+</html>
