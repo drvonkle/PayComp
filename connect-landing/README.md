@@ -31,73 +31,57 @@ The form automatically posts to `/api/lead` when opened at a `*.vercel.app` URL.
 
 **Do not make the form live before a test submission has successfully appeared as a contact, company and associated lead in the proper HubSpot pipeline.**
 
-## Confirmation email via HubSpot Marketing Hub Starter
+## Automatic confirmation emails (Resend)
 
-**Status: backend prepared, email NOT ACTIVE until the dedicated HubSpot form, its simple workflow, and its form GUID environment variable are configured.**
+The Vercel API is prepared to send a personalized transactional acknowledgement
+after a successful HubSpot CRM submission, **from** `PayComp <sales@paycomp.com>`
+and with `sales@paycomp.com` as its Reply-To. No separate HubSpot form,
+Marketing Hub workflow, Microsoft Entra application, or Microsoft mailbox
+credentials are needed.
 
-The Vercel form keeps its existing layout, HubSpot contact/company upsert,
-IPPA - 2026 lead creation, and Follow-Up Needed stage.
+**Not active until Resend is configured.** The existing HubSpot CRM intake
+remains functional if Resend is not configured or email sending fails.
 
-After a successful CRM submission, the backend can make a matching HubSpot
-**Forms Submission API** call to a dedicated published form. That HubSpot
-form's **simple automation** then sends a follow-up marketing email from
-`sales@paycomp.com`. This replaces the unused Resend and Microsoft Graph
-integrations. Do not create Microsoft Entra app credentials or buy Resend for
-this feature.
+### Minimal setup
 
-### HubSpot editor: complete these steps
+1. Create or sign in to a Resend account at https://resend.com/.
+2. Open https://resend.com/domains and add **paycomp.com** (the root sending
+   domain is required to use the exact From address sales@paycomp.com).
+   Add the DNS records Resend displays at the domain's authoritative DNS host.
+   Verify the records in Resend. **Never replace the existing root Microsoft 365
+   MX record or SPF record**: Resend's return-path MX/SPF records normally use
+   a *separate subdomain* (e.g. send.paycomp.com), plus DKIM records; verify
+   actual hostnames before editing. Do not add a second competing SPF TXT record
+   at the same hostname.
+3. Go to https://resend.com/api-keys and create a new key named
+   `PayComp Connect - Production`. Choose **Sending access** restricted to
+   the verified `paycomp.com` domain.
+4. In Vercel > project `paycomp-connect-landing` > Settings >
+   Environment Variables, add a **Sensitive** variable `RESEND_API_KEY`
+   targeting **Production**. Never put the key in chat or GitHub.
+5. Redeploy the project to activate the key.
+6. Test with a personal inbox controlled by PayComp. Confirm the new HubSpot
+   contact/company/lead appear in IPPA - 2026 > Follow-Up Needed, then check
+   the recipient inbox and Resend Email activity. `emailAccepted: true` in
+   the endpoint response means the API accepted the email; it does not mean
+   it was delivered.
 
-1. **Marketing > Forms > Create form**. Name it exactly
-   `PayComp Connect With Us - Confirmation`. Choose a HubSpot form with
-   contact properties `firstname`, `lastname`, `email`, `phone`, and
-   `company` (company text property on the contact). Publish the form.
-   It does **not** need to be visibly embedded: the Vercel backend submits
-   to it securely using the form GUID.
-2. In that form's **Automation** section, click
-   **Send an email after form submission > Create this workflow**.
-   Select a confirmation email with:
-   - Sender: `PayComp <sales@paycomp.com>`
-   - Subject: `Thanks for connecting with PayComp!`
-   - Body:
-     ```text
-     Hi [First Name],
+### Behavior and security
 
-     Thank you for your interest in PayComp!
-
-     We've received your information, and a member of our team will be
-     reaching out shortly.
-
-     We look forward to connecting with you and showing you how PayComp
-     can simplify your payroll and workers' compensation processes.
-
-     Best regards,
-     The PayComp Team
-     Connecting people. Simplifying payroll.
-     www.paycomp.com
-     ```
-   Use HubSpot's personalization tool for first name (fallback: `there`).
-   Verify `sales@paycomp.com` as the From address and publish the email
-   and turn on the simple workflow.
-3. **Marketing contact eligibility:** HubSpot's form workflow emails
-   require eligible **marketing contacts** under Marketing Hub plans.
-   Configure the form's marketing-contact/consent settings in accordance
-   with PayComp's policies and subscription allowances. Do not silently
-   turn all CRM contacts into marketing contacts.
-4. Copy the **form GUID** from the form's embed code or form URL.
-   In the Vercel project `paycomp-connect-landing`, add a **Production**
-   variable `HUBSPOT_FOLLOWUP_FORM_ID` set to that GUID, and redeploy.
-5. Test using an email inbox you control. Confirm the HubSpot contact,
-   company, associated lead, recorded **form submission**, and delivered
-   confirmation email. The API response field `hubspotFormSubmitted` is
-   **not** proof that an email arrived.
-
-**Safety:** Before enabling a public autoresponder, deploy rate limiting and
-bot protection to prevent third parties from using it to send unsolicited
-messages. The API has a honeypot and optional server-side Turnstile check,
-but the client-side Turnstile integration is not configured yet.
-
-HubSpot reference:
-https://knowledge.hubspot.com/forms/form-automations
+- Subject: **Thanks for connecting with PayComp!**
+- Body: PayComp-branded HTML and plain text, first-name greeting, short
+  follow-up acknowledgement, PayComp website and reply-to address.
+- No marketing contacts or HubSpot Marketing Hub upgrade is required for this
+  transactional acknowledgement.
+- A per-contact/date Resend idempotency key helps prevent accidental duplicate
+  emails from repeated submissions during its 24-hour storage window.
+- Add operational rate limiting and a working CAPTCHA to the public form before
+  high-volume use. The current form has a honeypot and optional server-side
+  Turnstile verification, but its browser-side Turnstile challenge still
+  needs configuration. Public autoresponders can be abused to send
+  unsolicited messages to third-party addresses.
+- Resend send activity will not automatically appear in the Microsoft 365
+  shared mailbox's Sent Items folder, even though replies go to sales@paycomp.com.
 
 ## Important notes
 
