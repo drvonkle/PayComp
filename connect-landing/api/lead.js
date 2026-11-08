@@ -44,46 +44,82 @@ async function findExact(object, property, value, limit = 10) {
   });
   return (found.results || []).filter(x => String(x.properties?.[property] || '').toLowerCase() === value.toLowerCase());
 }
-// Record the completed inquiry as a real HubSpot form submission to trigger
-// a Marketing Hub Starter form-based confirmation email workflow.
-// Configure HUBSPOT_FOLLOWUP_FORM_ID with the GUID of the dedicated, published
-// "PayComp Connect With Us - Confirmation" HubSpot form. Leave blank until
-// the form and automation are configured. The existing HubSpot lead remains
-// the source of truth; form-submission errors must not undo the CRM changes.
-async function recordHubSpotFollowupForm(data) {
-  const formGuid = String(process.env.HUBSPOT_FOLLOWUP_FORM_ID || '').trim();
-  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(formGuid)) return false;
+// Send a transactional acknowledgement through Resend AFTER successful CRM intake.
+// A verified paycomp.com domain and RESEND_API_KEY must be configured in Vercel.
+// Without the key, lead submissions continue normally and no email is attempted.
+function escapeEmailHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+async function sendConfirmationEmail(data, contactId) {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return false;
+  const greetingName = escapeEmailHtml(data.firstname);
+  const subject = 'Thanks for connecting with PayComp!';
+  const plain = [
+    'Hi ' + data.firstname + ',', '',
+    'Thank you for your interest in PayComp!',
+    "We've received your information, and a member of our team will be reaching out shortly.",
+    '',
+    "We look forward to connecting with you and showing you how PayComp can simplify your payroll and workers' compensation processes.",
+    '',
+    'Best regards,',
+    'The PayComp Team',
+    'Connecting people. Simplifying payroll.',
+    'https://www.paycomp.com'
+  ].join('\n');
+  const html = [
+    '<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>',
+    '<body style="margin:0;background:#f3f7fc;font-family:Arial,Helvetica,sans-serif;color:#153052;">',
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;padding:28px 14px"><tr><td align="center">',
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:580px;border:1px solid #dce8f4;border-radius:12px;background:#fff;">',
+    '<tr><td style="height:7px;background:#0b559e;"></td></tr>',
+    '<tr><td style="padding:32px 34px 35px;">',
+    '<div style="font-size:31px;font-weight:bold;color:#083e91;letter-spacing:-1px;">Pay<span style="color:#1274bd">Comp</span></div>',
+    '<div style="font-size:11px;letter-spacing:1.8px;font-weight:bold;color:#d28b17;margin-top:4px;">PAYROLL. SIMPLIFIED.</div>',
+    '<h1 style="font-size:23px;line-height:1.35;color:#0b2b62;margin:30px 0 20px;">Thanks for connecting with PayComp!</h1>',
+    '<p style="font-size:15px;line-height:1.7;">Hi ' + greetingName + ',</p>',
+    '<p style="font-size:15px;line-height:1.7;">Thank you for your interest in PayComp! We&rsquo;ve received your information, and a member of our team will be reaching out shortly.</p>',
+    '<p style="font-size:15px;line-height:1.7;">We look forward to connecting with you and showing you how PayComp can simplify your payroll and workers&rsquo; compensation processes.</p>',
+    '<p style="font-size:15px;line-height:1.7;margin:25px 0 0;">Best regards,<br><strong>The PayComp Team</strong></p>',
+    '<div style="border-top:1px solid #e9eef7;padding-top:20px;margin-top:30px;font-size:12px;color:#63758b;">',
+    'Connecting people. Simplifying payroll.<br><a href="https://www.paycomp.com" style="color:#0b559e;">www.paycomp.com</a>',
+    '</div></td></tr></table></td></tr></table></body></html>'
+  ].join('');
 
-  const fields = ['firstname', 'lastname', 'email', 'phone', 'company']
-    .map(name => ({ name, value: data[name] }));
-
-  const response = await fetch(
-    'https://api.hsforms.com/submissions/v3/integration/submit/244845203/' + formGuid,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        submittedAt: Date.now(),
-        fields,
-        context: {
-          pageUri: 'https://paycomp-connect-with-us.vercel.app/',
-          pageName: 'PayComp Connect With Us'
-        }
-      })
-    }
-  );
+  // Resend keeps idempotency keys for 24 hours. The same lead's retries
+  // that day should not trigger another confirmation email.
+  const crypto = require('crypto');
+  const date = new Date().toISOString().slice(0, 10);
+  const fingerprint = crypto.createHash('sha256')
+    .update('paycomp-ippa-confirmation-v1:' + contactId + ':' + date).digest('hex');
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + key,
+      'Content-Type': 'application/json',
+      'Idempotency-Key': 'paycomp-ippa-confirmation-' + fingerprint
+    },
+    body: JSON.stringify({
+      from: 'PayComp <sales@paycomp.com>',
+      to: [data.email],
+      reply_to: 'sales@paycomp.com',
+      subject, html, text: plain
+    })
+  });
   if (!response.ok) {
-    // Do not log form response data or visitor information.
-    console.error('PayComp HubSpot form submission rejected', { status: response.status });
+    // Do not log Resend response, credentials or visitor contact details.
+    console.error('PayComp confirmation email not accepted', { status: response.status });
     return false;
   }
-  // Form accepted does NOT prove that the automated email was delivered.
+  // API acceptance does not guarantee final inbox delivery.
   return true;
 }
-async function tryRecordFollowupForm(data) {
-  try { return await recordHubSpotFollowupForm(data); }
+async function trySendConfirmationEmail(data, contactId) {
+  try { return await sendConfirmationEmail(data, contactId); }
   catch {
-    console.error('PayComp HubSpot form submission failed');
+    console.error('PayComp confirmation email request failed');
     return false;
   }
 }
@@ -172,8 +208,8 @@ module.exports = async function handler(req, res) {
     await hs('/crm/v4/objects/contacts/' + contactId + '/associations/default/companies/' + companyId, 'PUT');
     const existing = await getExistingIppaLead(contactId);
     if (existing) {
-      const hubspotFormSubmitted = await tryRecordFollowupForm(data);
-      return res.status(200).json({ success: true, existing: true, hubspotFormSubmitted });
+      const emailAccepted = await trySendConfirmationEmail(data, contactId);
+      return res.status(200).json({ success: true, existing: true, emailAccepted });
     }
     const lead = await hs('/crm/v3/objects/leads', 'POST', {
       properties: {
@@ -186,8 +222,8 @@ module.exports = async function handler(req, res) {
       }]
     });
     await hs('/crm/v4/objects/leads/' + lead.id + '/associations/default/companies/' + companyId, 'PUT');
-    const hubspotFormSubmitted = await tryRecordFollowupForm(data);
-    return res.status(200).json({ success: true, hubspotFormSubmitted });
+    const emailAccepted = await trySendConfirmationEmail(data, contactId);
+    return res.status(200).json({ success: true, emailAccepted });
   } catch (e) {
     // Never expose credentials, CRM responses or submitted PII to visitors.
     console.error('PayComp intake failure', { status: e.status || 500, path: e.path || 'internal' });
