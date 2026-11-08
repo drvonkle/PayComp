@@ -31,57 +31,107 @@ The form automatically posts to `/api/lead` when opened at a `*.vercel.app` URL.
 
 **Do not make the form live before a test submission has successfully appeared as a contact, company and associated lead in the proper HubSpot pipeline.**
 
-## Automatic confirmation emails (Resend)
+## Automatic confirmation email using Microsoft 365 and Power Automate
 
-The Vercel API is prepared to send a personalized transactional acknowledgement
-after a successful HubSpot CRM submission, **from** `PayComp <sales@paycomp.com>`
-and with `sales@paycomp.com` as its Reply-To. No separate HubSpot form,
-Marketing Hub workflow, Microsoft Entra application, or Microsoft mailbox
-credentials are needed.
+**Status: The website API integration is prepared but NOT ACTIVE until the
+Power Automate cloud flow exists and its secure trigger URL is added to
+Vercel.** Neither Resend nor Microsoft Graph client credentials are needed.
 
-**Not active until Resend is configured.** The existing HubSpot CRM intake
-remains functional if Resend is not configured or email sending fails.
+After a successful HubSpot contact, company, and IPPA - 2026 lead submission,
+the Vercel backend sends the visitor's `firstname` and `email` to a
+Power Automate flow. The flow uses the standard **Office 365 Outlook >
+Send an email from a shared mailbox (V2)** action to send from
+`sales@paycomp.com`.
 
-### Minimal setup
+### Licensing prerequisite
 
-1. Create or sign in to a Resend account at https://resend.com/.
-2. Open https://resend.com/domains and add **paycomp.com** (the root sending
-   domain is required to use the exact From address sales@paycomp.com).
-   Add the DNS records Resend displays at the domain's authoritative DNS host.
-   Verify the records in Resend. **Never replace the existing root Microsoft 365
-   MX record or SPF record**: Resend's return-path MX/SPF records normally use
-   a *separate subdomain* (e.g. send.paycomp.com), plus DKIM records; verify
-   actual hostnames before editing. Do not add a second competing SPF TXT record
-   at the same hostname.
-3. Go to https://resend.com/api-keys and create a new key named
-   `PayComp Connect - Production`. Choose **Sending access** restricted to
-   the verified `paycomp.com` domain.
-4. In Vercel > project `paycomp-connect-landing` > Settings >
-   Environment Variables, add a **Sensitive** variable `RESEND_API_KEY`
-   targeting **Production**. Never put the key in chat or GitHub.
-5. Redeploy the project to activate the key.
-6. Test with a personal inbox controlled by PayComp. Confirm the new HubSpot
-   contact/company/lead appear in IPPA - 2026 > Follow-Up Needed, then check
-   the recipient inbox and Resend Email activity. `emailAccepted: true` in
-   the endpoint response means the API accepted the email; it does not mean
-   it was delivered.
+- The **When an HTTP request is received** trigger is a **Premium** trigger
+  in Power Automate. Having Microsoft 365 administration rights or Power
+  Automate access does not itself grant Premium licensing. Before activating,
+  check the flow owner's Power Automate Premium / Process entitlements.
+- Outlook's **Send an email from a shared mailbox (V2)** action is a
+  standard connector, and the connection user requires the correct mailbox
+  **Send As** access to `sales@paycomp.com`.
 
-### Behavior and security
+### Create the flow
 
-- Subject: **Thanks for connecting with PayComp!**
-- Body: PayComp-branded HTML and plain text, first-name greeting, short
-  follow-up acknowledgement, PayComp website and reply-to address.
-- No marketing contacts or HubSpot Marketing Hub upgrade is required for this
-  transactional acknowledgement.
-- A per-contact/date Resend idempotency key helps prevent accidental duplicate
-  emails from repeated submissions during its 24-hour storage window.
-- Add operational rate limiting and a working CAPTCHA to the public form before
-  high-volume use. The current form has a honeypot and optional server-side
-  Turnstile verification, but its browser-side Turnstile challenge still
-  needs configuration. Public autoresponders can be abused to send
-  unsolicited messages to third-party addresses.
-- Resend send activity will not automatically appear in the Microsoft 365
-  shared mailbox's Sent Items folder, even though replies go to sales@paycomp.com.
+1. At https://make.powerautomate.com, select **Create > Instant cloud
+   flow**, then choose the **When an HTTP request is received** trigger.
+   Name: `PayComp Connect - Send Confirmation`. If this trigger is shown
+   as Premium and no appropriate license is available, stop: do not
+   activate a flow that the license cannot run.
+2. Configure the trigger to accept this JSON request body schema:
+
+   ```json
+   {
+     "type": "object",
+     "properties": {
+       "firstname": { "type": "string" },
+       "email": { "type": "string" }
+     },
+     "required": ["firstname", "email"]
+   }
+   ```
+
+   The trigger may default to **Any user in my tenant**. The PayComp Vercel
+   backend isn't logged in as a Microsoft Entra user. Without a separately
+   authorized Entra identity, the simple webhook arrangement requires the
+   trigger's **Who can trigger the flow** setting to be **Anyone**.
+   **Treat the generated callback URL as a secret**, since any party with
+   that URL may invoke the flow. Never expose it in front-end HTML,
+   GitHub, publicly shared logs, screenshots or email. Microsoft strongly
+   recommends Entra-based auth as the stronger protection.
+
+3. Add action **Office 365 Outlook > Send an email from a shared mailbox (V2)**.
+   Connect using a licensed Microsoft 365 user who has Send As permissions
+   for the shared mailbox (the shared mailbox itself does not need to sign in).
+
+   - Original Mailbox Address: `sales@paycomp.com`
+   - To: select **email** from HTTP request trigger dynamic content.
+   - Subject: `Thanks for connecting with PayComp!`
+   - Body (HTML supported):
+     ```html
+     <p>Hi [FIRSTNAME],</p>
+     <p>Thank you for your interest in PayComp!</p>
+     <p>We've received your information, and a member of our team
+     will be reaching out shortly.</p>
+     <p>We look forward to connecting with you and showing you how
+     PayComp can simplify your payroll and workers' compensation processes.</p>
+     <p>Best regards,<br><strong>The PayComp Team</strong></p>
+     <p>Connecting people. Simplifying payroll.<br>
+     <a href="https://www.paycomp.com">www.paycomp.com</a></p>
+     ```
+   Replace `[FIRSTNAME]` with the HTTP trigger's **firstname** dynamic content.
+   Optionally add PayComp colors and an image URL from the official website.
+
+4. Save the flow. Copy its **HTTP POST URL** carefully. This is a credential
+   because it commonly includes a signature.
+5. In Vercel project `paycomp-connect-landing` > **Settings >
+   Environment Variables**, add one **Sensitive Production** variable:
+   `PAYCOMP_CONFIRMATION_FLOW_URL` = the generated HTTP POST URL.
+   Do not paste that URL into chat or public code. Redeploy Production.
+6. Test one form submission with an email inbox you control. Verify the
+   HubSpot IPPA lead in **Follow-Up Needed**, the Power Automate flow run,
+   and delivery in the recipient inbox. API response `flowTriggered:true`
+   only means the workflow accepted the request, not delivery.
+
+### Security and operational notes
+
+The site continues accepting and storing HubSpot leads if the flow isn't
+configured or the email fails. This avoids loss of lead intake when mail
+is unavailable.
+
+Before enabling a public autoresponder, configure bot protection and
+rate limiting for the public landing page; otherwise an attacker can use
+the form to send unsolicited emails to third parties. Optional server-side
+Turnstile support is in `api/lead.js`, but a front-end challenge must also
+be configured. Restrict access to the flow's URL to website administrators;
+renew/revoke its signature if exposed.
+
+References:
+- https://learn.microsoft.com/en-us/connectors/office365/
+- https://learn.microsoft.com/en-us/power-automate/oauth-authentication
+- https://learn.microsoft.com/en-us/power-platform/admin/power-automate-licensing/types
 
 ## Important notes
 
