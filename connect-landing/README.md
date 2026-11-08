@@ -33,9 +33,10 @@ The form automatically posts to `/api/lead` when opened at a `*.vercel.app` URL.
 
 ## Automatic confirmation email using Microsoft 365 and Power Automate
 
-**Status: The website API integration is prepared but NOT ACTIVE until the
-Power Automate cloud flow exists and its secure trigger URL is added to
-Vercel.** Neither Resend nor Microsoft Graph client credentials are needed.
+**Status: The Power Automate HTTP trigger URL is configured in Vercel as a
+Sensitive Production environment variable. A fresh production deployment and
+controlled end-to-end email test are required before considering the feature
+verified.** Neither Resend nor Microsoft Graph client credentials are needed.
 
 After a successful HubSpot contact, company, and IPPA - 2026 lead submission,
 the Vercel backend sends the visitor's `firstname` and `email` to a
