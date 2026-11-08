@@ -44,101 +44,46 @@ async function findExact(object, property, value, limit = 10) {
   });
   return (found.results || []).filter(x => String(x.properties?.[property] || '').toLowerCase() === value.toLowerCase());
 }
-// Transactional acknowledgement via Microsoft Graph after successful HubSpot intake.
-// The Entra app must be authorized with Exchange Application RBAC scoped ONLY
-// to sales@paycomp.com. No tenant-wide Mail.Send grant should be left in Entra.
-// No mailbox login/password or mail credentials are ever sent to the browser.
-const SALES_MAILBOX = 'sales@paycomp.com';
-function escapeHtml(value) {
-  return String(value || '').replace(/[&<>"']/g, char => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[char]));
-}
-function microsoftMailConfigured() {
-  return Boolean(process.env.MS365_TENANT_ID &&
-    process.env.MS365_CLIENT_ID && process.env.MS365_CLIENT_SECRET);
-}
-async function getMicrosoftGraphToken() {
-  const tenant = process.env.MS365_TENANT_ID;
-  const body = new URLSearchParams();
-  body.set('client_id', process.env.MS365_CLIENT_ID);
-  body.set('client_secret', process.env.MS365_CLIENT_SECRET);
-  body.set('grant_type', 'client_credentials');
-  body.set('scope', 'https://graph.microsoft.com/.default');
+// Record the completed inquiry as a real HubSpot form submission to trigger
+// a Marketing Hub Starter form-based confirmation email workflow.
+// Configure HUBSPOT_FOLLOWUP_FORM_ID with the GUID of the dedicated, published
+// "PayComp Connect With Us - Confirmation" HubSpot form. Leave blank until
+// the form and automation are configured. The existing HubSpot lead remains
+// the source of truth; form-submission errors must not undo the CRM changes.
+async function recordHubSpotFollowupForm(data) {
+  const formGuid = String(process.env.HUBSPOT_FOLLOWUP_FORM_ID || '').trim();
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(formGuid)) return false;
+
+  const fields = ['firstname', 'lastname', 'email', 'phone', 'company']
+    .map(name => ({ name, value: data[name] }));
+
   const response = await fetch(
-    'https://login.microsoftonline.com/' + encodeURIComponent(tenant) + '/oauth2/v2.0/token',
-    { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body }
-  );
-  if (!response.ok) {
-    console.error('PayComp Microsoft 365 token request rejected', { status: response.status });
-    return null;
-  }
-  const tokenResponse = await response.json();
-  return tokenResponse.access_token || null;
-}
-async function sendPayCompConfirmation(data) {
-  if (!microsoftMailConfigured()) return false;
-  const token = await getMicrosoftGraphToken();
-  if (!token) return false;
-  const firstName = escapeHtml(data.firstname);
-  const text = [
-    'Hi ' + data.firstname + ',',
-    '',
-    'Thank you for your interest in PayComp!',
-    "We've received your information, and a member of our team will be reaching out shortly.",
-    '',
-    'We look forward to connecting with you and showing you how PayComp can simplify your payroll and workers’ compensation processes.',
-    '',
-    'Best regards,',
-    'The PayComp Team',
-    'Connecting people. Simplifying payroll.',
-    'https://www.paycomp.com'
-  ].join('\n');
-  const html = [
-    '<!doctype html><html lang="en"><head><meta charset="utf-8"></head>',
-    '<body style="margin:0;background:#f3f7fc;font-family:Arial,Helvetica,sans-serif;color:#152b47">',
-    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;padding:30px 14px"><tr><td align="center">',
-    '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:570px;background:#fff;border:1px solid #dfebf7;border-radius:14px;overflow:hidden">',
-    '<tr><td style="height:7px;background:linear-gradient(90deg,#0d4ca3,#13a8dd,#f8a122)"></td></tr>',
-    '<tr><td style="padding:35px 35px 28px">',
-    '<div style="font-size:30px;font-weight:800;color:#083e91;letter-spacing:-1px">Pay<span style="color:#1274bd">Comp</span></div>',
-    '<div style="font-size:11px;letter-spacing:2px;font-weight:700;color:#dc890f;margin-top:3px">PAYROLL. SIMPLIFIED.</div>',
-    '<h1 style="font-size:24px;line-height:1.25;color:#0b2b62;margin:31px 0 20px">Thanks for connecting with PayComp!</h1>',
-    '<p style="font-size:15px;line-height:1.7">Hi ' + firstName + ',</p>',
-    '<p style="font-size:15px;line-height:1.7">Thank you for your interest in PayComp! We&rsquo;ve received your information, and a member of our team will be reaching out shortly.</p>',
-    '<p style="font-size:15px;line-height:1.7">We look forward to connecting with you and showing you how PayComp can simplify your payroll and workers&rsquo; compensation processes.</p>',
-    '<p style="font-size:15px;line-height:1.7;margin:28px 0 0">Best regards,<br><strong>The PayComp Team</strong></p>',
-    '<div style="border-top:1px solid #edf1f7;padding-top:20px;margin-top:30px;font-size:12px;color:#667a93">',
-    'Connecting people. Simplifying payroll.<br><a href="https://www.paycomp.com" style="color:#0d57b5">www.paycomp.com</a>',
-    '</div></td></tr></table></td></tr></table></body></html>'
-  ].join('');
-  const response = await fetch(
-    'https://graph.microsoft.com/v1.0/users/' + encodeURIComponent(SALES_MAILBOX) + '/sendMail',
+    'https://api.hsforms.com/submissions/v3/integration/submit/244845203/' + formGuid,
     {
       method: 'POST',
-      headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: {
-          subject: 'Thanks for connecting with PayComp!',
-          body: { contentType: 'HTML', content: html },
-          toRecipients: [{ emailAddress: { address: data.email } }],
-          replyTo: [{ emailAddress: { address: SALES_MAILBOX } }]
-        },
-        saveToSentItems: true
+        submittedAt: Date.now(),
+        fields,
+        context: {
+          pageUri: 'https://paycomp-connect-with-us.vercel.app/',
+          pageName: 'PayComp Connect With Us'
+        }
       })
     }
   );
-  if (response.status !== 202) {
-    console.error('PayComp Microsoft 365 confirmation not accepted', { status: response.status });
+  if (!response.ok) {
+    // Do not log form response data or visitor information.
+    console.error('PayComp HubSpot form submission rejected', { status: response.status });
     return false;
   }
-  // 202 means Microsoft Graph accepted the message, not necessarily delivered.
+  // Form accepted does NOT prove that the automated email was delivered.
   return true;
 }
-async function tryConfirmationEmail(data) {
-  try { return await sendPayCompConfirmation(data); }
-  catch (error) {
-    console.error('PayComp Microsoft 365 confirmation encountered an error');
+async function tryRecordFollowupForm(data) {
+  try { return await recordHubSpotFollowupForm(data); }
+  catch {
+    console.error('PayComp HubSpot form submission failed');
     return false;
   }
 }
@@ -227,8 +172,8 @@ module.exports = async function handler(req, res) {
     await hs('/crm/v4/objects/contacts/' + contactId + '/associations/default/companies/' + companyId, 'PUT');
     const existing = await getExistingIppaLead(contactId);
     if (existing) {
-      const emailAccepted = await tryConfirmationEmail(data);
-      return res.status(200).json({ success: true, existing: true, emailAccepted });
+      const hubspotFormSubmitted = await tryRecordFollowupForm(data);
+      return res.status(200).json({ success: true, existing: true, hubspotFormSubmitted });
     }
     const lead = await hs('/crm/v3/objects/leads', 'POST', {
       properties: {
@@ -241,8 +186,8 @@ module.exports = async function handler(req, res) {
       }]
     });
     await hs('/crm/v4/objects/leads/' + lead.id + '/associations/default/companies/' + companyId, 'PUT');
-    const emailAccepted = await tryConfirmationEmail(data);
-    return res.status(200).json({ success: true, emailAccepted });
+    const hubspotFormSubmitted = await tryRecordFollowupForm(data);
+    return res.status(200).json({ success: true, hubspotFormSubmitted });
   } catch (e) {
     // Never expose credentials, CRM responses or submitted PII to visitors.
     console.error('PayComp intake failure', { status: e.status || 500, path: e.path || 'internal' });
