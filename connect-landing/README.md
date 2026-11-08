@@ -31,28 +31,101 @@ The form automatically posts to `/api/lead` when opened at a `*.vercel.app` URL.
 
 **Do not make the form live before a test submission has successfully appeared as a contact, company and associated lead in the proper HubSpot pipeline.**
 
-## Automatic confirmation emails
+## Automatic confirmation emails (Microsoft 365 shared mailbox)
 
-The follow-up API includes a branded **transactional acknowledgement** from `PayComp <sales@paycomp.com>`, personalized with the visitor's first name. This runs **after** the contact, company, and lead have been written to HubSpot. It runs for a successful repeat submission without creating a duplicate IPPA lead.
+The Vercel API is prepared to send a **transactional confirmation message from**
+`sales@paycomp.com` using Microsoft Graph **after** the HubSpot contact,
+company, and IPPA - 2026 lead operations succeed. For successful repeat
+submissions, the existing lead is not duplicated or moved. The email handler
+is separate: mail errors do **not** undo the CRM submission.
 
-Sending remains **disabled** until a verified sending domain and `RESEND_API_KEY` are configured. HubSpot CRM submissions continue to succeed if the email provider is unavailable, and the API returns `emailSent: false` rather than reporting email delivery.
+Email sending is **not yet active** until Microsoft Entra credentials and
+Exchange Online mailbox-scoped authorization are configured. The backend
+returns `emailAccepted: false` when mail is unavailable, and
+`emailAccepted: true` when Microsoft Graph returns HTTP 202 (accepted for
+processing, **not a guarantee of delivery**). The frontend must not promise
+email delivery.
 
-To activate in Resend:
+### 1. Register one single-tenant Microsoft Entra application
 
-1. Create a Resend account and add `paycomp.com` to **Domains**. Verify sending by adding the exact DNS records Resend gives you. **Do not replace** your existing Microsoft 365 mail routing, MX, or root SPF records; work with the domain administrator to add the required verification and sender records safely.
-2. Create a **Sending access** API key in Resend, scoped to the verified domain where possible.
-3. In Vercel project `paycomp-connect-landing`, add a **Sensitive / Production** environment variable named `RESEND_API_KEY` with the copied key. Never put it in GitHub or chat.
-4. Redeploy the Production build so the new variable is loaded.
-5. Submit a test inquiry using an email inbox you control. Verify the test HubSpot contact, associated company, and IPPA lead. Confirm the acknowledgement is accepted in Resend and delivered to the inbox (and check spam).
+Go to https://entra.microsoft.com > **Identity > Applications >
+App registrations > New registration**. Set name `PayComp Landing
+Confirmation Email`, supported accounts `Accounts in this organizational
+directory only`. Do not register a redirect URI for this server-to-server
+integration.
 
-**Email template**
+From **Overview**, copy:
+- **Directory (tenant) ID** -> `MS365_TENANT_ID`
+- **Application (client) ID** -> `MS365_CLIENT_ID`
 
-- From and reply-to: `sales@paycomp.com`
-- Subject: `Thanks for connecting with PayComp!`
-- Content: personalized acknowledgement with an estimated response of "shortly", PayComp branding, and the website.
-- This is an acknowledgement of an inquiry, not a marketing subscription or sales blast.
-- A per-contact daily idempotency key reduces accidental duplicate emails on retries.
-- Public forms should have a working CAPTCHA and rate limiting before unrestricted sending at scale.
+Go to **Certificates & secrets > Client secrets > New client secret**. Set
+appropriate expiry and copy the **Value** (not the secret ID) *once* ->
+`MS365_CLIENT_SECRET`. Manage its expiration and rotation. Do not share it
+in a chat, GitHub, or email.
+
+### 2. Scope app-only Mail.Send to ONLY sales@paycomp.com
+
+Microsoft recommends **Exchange Online Application RBAC** for narrowly scoped
+app-only mailbox permissions. An unscoped Microsoft Graph **Mail.Send
+application grant in Entra ID** allows sending as any mailbox and is
+**independent** of Exchange RBAC. Do NOT grant unscoped Mail.Send in Entra when
+using the scoped RBAC approach. Have a qualified Exchange admin configure
+a scoped **Application Mail.Send** role assignment to the service principal
+for this Entra application.
+
+Microsoft docs:
+- https://learn.microsoft.com/en-us/exchange/permissions-exo/application-rbac
+- https://learn.microsoft.com/en-us/graph/api/user-sendmail?view=graph-rest-1.0
+
+Exchange Online PowerShell illustration (requires Exchange administrator
+permissions and an Exchange Application RBAC-capable organization):
+
+```powershell
+Connect-ExchangeOnline
+# Copy Enterprise Applications > PayComp Landing Confirmation Email > Object ID
+# (service principal object ID, NOT the app registration object ID).
+New-ServicePrincipal -AppId "<Application (client) ID>" -ObjectId "<Enterprise service principal Object ID>" -DisplayName "PayComp Landing Confirmation Email"
+
+New-ManagementScope -Name "PayComp-Sales-Mailbox-Only" -RecipientRestrictionFilter "PrimarySmtpAddress -eq 'sales@paycomp.com'"
+New-ManagementRoleAssignment -Name "PayComp-Sales-Confirmation-Send" -App "<Application (client) ID>" -Role "Application Mail.Send" -CustomResourceScope "PayComp-Sales-Mailbox-Only"
+Test-ServicePrincipalAuthorization -Identity "<Application (client) ID>" -Resource "sales@paycomp.com"
+```
+
+Confirm `InScope=True` for **sales@paycomp.com** and
+`InScope=False` for an unrelated mailbox before enabling the production
+secret. Make sure the recipient filter actually matches only the sales
+mailbox. Mailbox-scope changes may take time to propagate. Only qualified
+admins should run these commands.
+
+### 3. Add secrets in Vercel and redeploy
+
+In Vercel project `paycomp-connect-landing`, go to **Settings >
+Environment Variables** and add **Sensitive** variables for **Production**:
+- `MS365_TENANT_ID` — Microsoft Entra directory tenant ID
+- `MS365_CLIENT_ID` — client ID from app registration
+- `MS365_CLIENT_SECRET` — client secret VALUE (not ID)
+
+Then **Redeploy** to apply them. Do not configure `RESEND_API_KEY`:
+Resend was removed from the integration. The shared mailbox account itself
+requires **no password** in Vercel.
+
+### 4. Complete a safe end-to-end test
+
+Submit one request using a test email address you control. Confirm HubSpot
+created or matched the contact/company/lead in **Follow-Up Needed**. Confirm
+the mail appears in the `sales@paycomp.com` Sent Items folder and is
+delivered to the test inbox. If not, inspect **Vercel Functions logs** and
+Microsoft Entra/Exchange scope diagnostics (never paste secrets in logs).
+
+**Important:** Add a functional CAPTCHA and rate limiting to this public form
+before enabling automatic sending at scale. A public autoresponder can
+otherwise be abused to send unsolicited email to third parties. Turnstile
+server-side verification already exists in `api/lead.js`, but the front-end
+challenge must also be configured before setting `TURNSTILE_SECRET_KEY`.
+
+**Email content:** Subject `Thanks for connecting with PayComp!`, from
+`sales@paycomp.com`, personalized salutation and PayComp acknowledgement,
+reply-to `sales@paycomp.com`.
 
 ## Important notes
 
