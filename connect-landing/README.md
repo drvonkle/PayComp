@@ -31,6 +31,29 @@ The form automatically posts to `/api/lead` when opened at a `*.vercel.app` URL.
 
 **Do not make the form live before a test submission has successfully appeared as a contact, company and associated lead in the proper HubSpot pipeline.**
 
+## Automatic confirmation emails
+
+The follow-up API includes a branded **transactional acknowledgement** from `PayComp <sales@paycomp.com>`, personalized with the visitor's first name. This runs **after** the contact, company, and lead have been written to HubSpot. It runs for a successful repeat submission without creating a duplicate IPPA lead.
+
+Sending remains **disabled** until a verified sending domain and `RESEND_API_KEY` are configured. HubSpot CRM submissions continue to succeed if the email provider is unavailable, and the API returns `emailSent: false` rather than reporting email delivery.
+
+To activate in Resend:
+
+1. Create a Resend account and add `paycomp.com` to **Domains**. Verify sending by adding the exact DNS records Resend gives you. **Do not replace** your existing Microsoft 365 mail routing, MX, or root SPF records; work with the domain administrator to add the required verification and sender records safely.
+2. Create a **Sending access** API key in Resend, scoped to the verified domain where possible.
+3. In Vercel project `paycomp-connect-landing`, add a **Sensitive / Production** environment variable named `RESEND_API_KEY` with the copied key. Never put it in GitHub or chat.
+4. Redeploy the Production build so the new variable is loaded.
+5. Submit a test inquiry using an email inbox you control. Verify the test HubSpot contact, associated company, and IPPA lead. Confirm the acknowledgement is accepted in Resend and delivered to the inbox (and check spam).
+
+**Email template**
+
+- From and reply-to: `sales@paycomp.com`
+- Subject: `Thanks for connecting with PayComp!`
+- Content: personalized acknowledgement with an estimated response of "shortly", PayComp branding, and the website.
+- This is an acknowledgement of an inquiry, not a marketing subscription or sales blast.
+- A per-contact daily idempotency key reduces accidental duplicate emails on retries.
+- Public forms should have a working CAPTCHA and rate limiting before unrestricted sending at scale.
+
 ## Important notes
 
 - Existing contact and company records are reused where unambiguous.
