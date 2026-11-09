@@ -14,7 +14,12 @@ header{background:linear-gradient(112deg,#061a44,#114a93);padding:24px max(20px,
 .top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 h1{font-size:clamp(24px,2.7vw,40px);letter-spacing:-.03em;margin:0}
 header p{margin:8px 0 0;color:#c7e5fa}
-.back{display:inline-flex;text-decoration:none;color:#fff;border:1px solid #ffffff65;border-radius:11px;padding:11px 15px;font-weight:650}
+.header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.back,.connect{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:11px;padding:11px 15px;font-weight:750;transition:transform .18s ease,box-shadow .18s ease}
+.back{color:#fff;border:1px solid #ffffff65;background:transparent}
+.connect{color:#061a44;background:linear-gradient(135deg,#FEC900,#ffdf63);border:1px solid #ffe37c;box-shadow:0 8px 22px #0003}
+.back:hover,.connect:hover{transform:translateY(-1px)}
+.connect:hover{box-shadow:0 12px 28px #0004}
 main{width:min(1760px,96vw);margin:clamp(20px,3vw,44px) auto}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.5vw,40px)}
 .person{min-width:0}
@@ -27,12 +32,12 @@ dialog{border:0;border-radius:15px;padding:12px;background:#fff;box-shadow:0 30p
 dialog::backdrop{background:rgba(1,13,32,.82);backdrop-filter:blur(6px)}
 dialog img{display:block;width:min(1400px,92vw);height:auto;max-height:83vh;object-fit:contain}
 dialog .close{display:block;margin:0 0 12px auto;background:#061a44;color:#fff;border:0;border-radius:8px;padding:10px 15px;cursor:pointer;font-size:15px;font-weight:700}
-@media(max-width:860px){.cards{grid-template-columns:1fr;max-width:760px;margin:auto}main{width:min(94vw,1760px)}header{padding:22px}}
-@media(prefers-reduced-motion:reduce){.visual{transition:none}.visual:hover{transform:none}}
+@media(max-width:860px){.cards{grid-template-columns:1fr;max-width:760px;margin:auto}main{width:min(94vw,1760px)}header{padding:22px}.header-actions{width:100%}.back,.connect{flex:1}}
+@media(prefers-reduced-motion:reduce){.visual,.back,.connect{transition:none}.visual:hover,.back:hover,.connect:hover{transform:none}}
 </style>
 </head>
 <body>
-<header><div class="top"><div><h1>Troy &amp; Johnny Business Cards</h1><p>IPPA 2026 · PayComp · Owners &amp; Executives Strategic Retreat</p></div><a class="back" href="../index.html">← Back to Resource Hub</a></div></header>
+<header><div class="top"><div><h1>Troy &amp; Johnny Business Cards</h1><p>IPPA 2026 · PayComp · Owners &amp; Executives Strategic Retreat</p></div><div class="header-actions"><a class="connect" href="https://paycomp-connect-with-us.vercel.app/" target="_blank" rel="noopener noreferrer">Let's Connect</a><a class="back" href="../index.html">← Back to Resource Hub</a></div></div></header>
 <main>
 <section class="cards" aria-label="PayComp business cards">
 <div class="person"><h2>Troy Hefner</h2><button class="visual" type="button" data-card="../../assets/ippa/troy-hefner-business-card.png" aria-label="Enlarge Troy Hefner business card"><img src="../assets/ippa/troy-hefner-business-card.png" alt="PayComp business card for Troy Hefner, Chief Executive Officer and Founder, including contact information and QR code" loading="eager"></button><p class="hint">Click the card to enlarge.</p></div>
