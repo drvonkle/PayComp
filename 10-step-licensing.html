@@ -6,35 +6,26 @@
 <title>10-Step Licensing | PayComp Resource Hub</title>
 <style>
 :root{--blue:#0B57D0;--cyan:#06B0ED;--navy:#071A3D;--gold:#FEC900}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#eef8ff 0,#f8fbff 48%,#eef5ff 100%);color:#0b1f46}
-body{padding:18px}
-.shell{width:min(1500px,98vw);margin:auto}
-.top{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 18px;margin-bottom:14px;border:1px solid #d7e9fb;border-radius:22px;background:rgba(255,255,255,.92);box-shadow:0 12px 35px rgba(7,42,105,.10)}
-.brand{display:flex;align-items:center;gap:16px;min-width:0}.brand img{width:min(260px,40vw);height:auto}.copy{min-width:0}.copy h1{font-size:clamp(20px,3vw,34px);margin:0 0 3px}.copy p{margin:0;color:#58709c}
-.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 15px;border-radius:999px;text-decoration:none;font-weight:800;border:1px solid #bcdcf5;background:white;color:#0b3d91}.btn.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:white;border:0}
-.viewer{height:calc(100vh - 128px);min-height:650px;border:1px solid #cfe4f7;border-radius:22px;overflow:hidden;background:white;box-shadow:0 18px 50px rgba(7,42,105,.13)}
-iframe{width:100%;height:100%;border:0;background:white}
-@media(max-width:800px){body{padding:8px}.top{align-items:flex-start;flex-direction:column}.actions{justify-content:flex-start}.brand img{width:190px}.viewer{height:calc(100vh - 190px);min-height:560px}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 8% 5%,rgba(6,176,237,.11),transparent 25%),linear-gradient(180deg,#eef8ff,#f8fbff 45%,#eef5ff);font-family:Inter,Segoe UI,Arial,sans-serif;color:#071a3d}
+.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 22px;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid #d6e8f7;box-shadow:0 7px 25px rgba(7,42,105,.08)}
+.brand{display:flex;align-items:center;gap:16px;min-width:0}.brand img{width:210px;height:auto}.copy h1{margin:0;font-size:clamp(20px,2.6vw,32px)}.copy p{margin:3px 0 0;color:#60769c;font-size:14px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;border:1px solid #bfdcf2;background:white;color:#0b3d91;white-space:nowrap}.btn.primary{border:0;color:white;background:linear-gradient(135deg,var(--blue),var(--cyan))}
+.deck{width:min(930px,94vw);margin:24px auto 60px;display:flex;flex-direction:column;gap:22px}
+.page{position:relative;margin:0;background:white;border:1px solid #d9e7f5;border-radius:18px;overflow:hidden;box-shadow:0 14px 38px rgba(6,42,117,.12)}
+.page img{display:block;width:100%;height:auto;background:#fff}
+.pageno{position:absolute;right:12px;top:12px;z-index:2;padding:5px 9px;border-radius:999px;background:rgba(7,26,61,.78);color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em}
+.end{width:min(1120px,94vw);margin:-35px auto 55px;text-align:center;color:#6f82a3;font-size:13px}
+@media(max-width:760px){.top{align-items:flex-start;flex-direction:column;padding:10px 12px}.brand img{width:160px}.actions{justify-content:flex-start}.deck{width:96vw;margin-top:14px;gap:12px}.page{border-radius:12px}.pageno{font-size:10px;right:7px;top:7px}}
 </style>
 </head>
 <body>
-<div class="shell">
-  <div class="top">
-    <div class="brand">
-      <img src="paycomp-logo-top.png?v=2" alt="PayComp">
-      <div class="copy"><h1>10-Step Licensing</h1><p>A clear roadmap to becoming a licensed CompConnect partner.</p></div>
-    </div>
-    <div class="actions">
-      <a class="btn" href="./">Back to Resource Hub</a>
-      <a class="btn primary" id="full" href="#" target="_blank" rel="noopener noreferrer">Open Full Screen</a>
-    </div>
-  </div>
-  <div class="viewer"><iframe id="viewer" title="10-Step Licensing" allowfullscreen></iframe></div>
-</div>
-<script>
-const src=atob("aHR0cHM6Ly9wYXljb21wLW15LnNoYXJlcG9pbnQuY29tLzpiOi9wL2R2b25rbGVpc3QvSVFDMDF1SXphUTdXUXBXTklTeWZGdTB1QVNCb3pCOXVzVHY1allaX25TRm9GbDA=");
-document.getElementById("viewer").src=src;
-document.getElementById("full").href=src;
-</script>
+<header class="top">
+ <div class="brand"><img src="paycomp-logo-top.png?v=2" alt="PayComp"><div class="copy"><h1>10-Step Licensing</h1><p>Licensing roadmap · Scroll to view</p></div></div>
+ <nav class="actions"><a class="btn" href="./">Back to Resource Hub</a><a class="btn primary" href="https://paycomp-my.sharepoint.com/:b:/p/dvonkleist/IQC01uIzaQ7WQpWNISyfFu0uASBozB9usTv5jYZ_nSFoFl0" target="_blank" rel="noopener noreferrer">Open Original PDF</a></nav>
+</header>
+<main class="deck"><figure class="page"><span class="pageno">Page 1 of 1</span><img src="https://paycomp-my.sharepoint.com/:i:/p/dvonkleist/IQDu81rgHLwlR5KMhWEy38q2AavCjgub-HTkK0xgxDn-pJ8?download=1" alt="10-Step Licensing page 1" ></figure></main>
+<div class="end">End of 10-Step Licensing</div>
 </body>
 </html>
