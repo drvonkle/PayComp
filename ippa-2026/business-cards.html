@@ -14,16 +14,16 @@ header{background:linear-gradient(112deg,#061a44,#114a93);padding:24px max(20px,
 .top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 h1{font-size:clamp(24px,2.7vw,40px);letter-spacing:-.03em;margin:0}
 header p{margin:8px 0 0;color:#c7e5fa}
-.header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.connect-callout{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em;white-space:nowrap}
+.header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.connect-callout{margin-left:-90px}
+.connect-callout{display:flex;align-items:center;gap:14px;color:#fff;font-weight:850;font-size:16px;letter-spacing:-.01em;white-space:nowrap}
 .connect-text{color:#dff4ff;text-shadow:0 1px 0 rgba(0,0,0,.08)}
-.arrow-wrap{display:inline-flex;align-items:center;gap:0;animation:arrowNudge 1.25s ease-in-out infinite}
-.arrow-line{display:block;width:34px;height:3px;border-radius:999px;background:linear-gradient(90deg,#7fe5ff,#FEC900);box-shadow:0 0 10px rgba(126,229,255,.35)}
-.arrow-head{display:block;width:12px;height:12px;margin-left:-2px;border-top:3px solid #FEC900;border-right:3px solid #FEC900;transform:rotate(45deg);box-shadow:1px -1px 8px rgba(254,201,0,.25)}
-@keyframes arrowNudge{0%,100%{transform:translateX(0);opacity:.9}50%{transform:translateX(6px);opacity:1}}
+.arrow-wrap{display:inline-flex;align-items:center;gap:0;filter:drop-shadow(0 0 9px rgba(254,201,0,.8));animation:arrowNudge .9s ease-in-out infinite}
+.arrow-line{display:block;width:52px;height:5px;border-radius:999px;background:linear-gradient(90deg,#7fe5ff 0%,#FEC900 72%,#fff2a8 100%);box-shadow:0 0 14px rgba(254,201,0,.65)}
+.arrow-head{display:block;width:18px;height:18px;margin-left:-4px;border-top:5px solid #FEC900;border-right:5px solid #FEC900;transform:rotate(45deg);box-shadow:2px -2px 10px rgba(254,201,0,.55)}
+@keyframes arrowNudge{0%,100%{transform:translateX(0) scale(1);opacity:.9}50%{transform:translateX(12px) scale(1.06);opacity:1}}@keyframes connectPulse{0%,100%{transform:scale(1);box-shadow:0 8px 22px rgba(0,0,0,.2),0 0 0 0 rgba(254,201,0,.38)}50%{transform:scale(1.045);box-shadow:0 12px 28px rgba(0,0,0,.26),0 0 0 10px rgba(254,201,0,0)}}
 .back,.connect{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:11px;padding:11px 15px;font-weight:750;transition:transform .18s ease,box-shadow .18s ease}
 .back{color:#fff;border:1px solid #ffffff65;background:transparent}
-.connect{color:#061a44;background:linear-gradient(135deg,#FEC900,#ffdf63);border:1px solid #ffe37c;box-shadow:0 8px 22px #0003}
+.connect{color:#061a44;background:linear-gradient(135deg,#FEC900,#ffdf63);border:1px solid #ffe37c;box-shadow:0 8px 22px #0003;animation:connectPulse 1.65s ease-in-out infinite}
 .back:hover,.connect:hover{transform:translateY(-1px)}
 .connect:hover{box-shadow:0 12px 28px #0004}
 main{width:min(1760px,96vw);margin:clamp(20px,3vw,44px) auto}
@@ -38,8 +38,8 @@ dialog{border:0;border-radius:15px;padding:12px;background:#fff;box-shadow:0 30p
 dialog::backdrop{background:rgba(1,13,32,.82);backdrop-filter:blur(6px)}
 dialog img{display:block;width:min(1400px,92vw);height:auto;max-height:83vh;object-fit:contain}
 dialog .close{display:block;margin:0 0 12px auto;background:#061a44;color:#fff;border:0;border-radius:8px;padding:10px 15px;cursor:pointer;font-size:15px;font-weight:700}
-@media(max-width:860px){.cards{grid-template-columns:1fr;max-width:760px;margin:auto}main{width:min(94vw,1760px)}header{padding:22px}.header-actions{width:100%}.back,.connect{flex:1}.connect-callout{width:100%;justify-content:flex-start}}
-@media(prefers-reduced-motion:reduce){.visual,.back,.connect{transition:none}.visual:hover,.back:hover,.connect:hover{transform:none}.arrow-wrap{animation:none}}
+@media(max-width:860px){.cards{grid-template-columns:1fr;max-width:760px;margin:auto}main{width:min(94vw,1760px)}header{padding:22px}.header-actions{width:100%}.back,.connect{flex:1}.connect-callout{width:100%;justify-content:flex-start;margin-left:0}}
+@media(prefers-reduced-motion:reduce){.visual,.back,.connect{transition:none}.visual:hover,.back:hover,.connect:hover{transform:none}.arrow-wrap{animation:none}.connect{animation:none}}
 </style>
 </head>
 <body>
