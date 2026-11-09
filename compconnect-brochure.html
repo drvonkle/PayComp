@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CompConnect Brochure | PayComp Resource Hub</title>
+<style>
+:root{--blue:#0B57D0;--cyan:#06B0ED;--navy:#071A3D;--gold:#FEC900}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#eef8ff 0,#f8fbff 48%,#eef5ff 100%);color:#0b1f46}
+body{padding:18px}
+.shell{width:min(1500px,98vw);margin:auto}
+.top{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px 18px;margin-bottom:14px;border:1px solid #d7e9fb;border-radius:22px;background:rgba(255,255,255,.92);box-shadow:0 12px 35px rgba(7,42,105,.10)}
+.brand{display:flex;align-items:center;gap:16px;min-width:0}.brand img{width:min(260px,40vw);height:auto}.copy{min-width:0}.copy h1{font-size:clamp(20px,3vw,34px);margin:0 0 3px}.copy p{margin:0;color:#58709c}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 15px;border-radius:999px;text-decoration:none;font-weight:800;border:1px solid #bcdcf5;background:white;color:#0b3d91}.btn.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:white;border:0}
+.viewer{height:calc(100vh - 128px);min-height:650px;border:1px solid #cfe4f7;border-radius:22px;overflow:hidden;background:white;box-shadow:0 18px 50px rgba(7,42,105,.13)}
+iframe{width:100%;height:100%;border:0;background:white}
+@media(max-width:800px){body{padding:8px}.top{align-items:flex-start;flex-direction:column}.actions{justify-content:flex-start}.brand img{width:190px}.viewer{height:calc(100vh - 190px);min-height:560px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top">
+    <div class="brand">
+      <img src="paycomp-logo-top.png?v=2" alt="PayComp">
+      <div class="copy"><h1>CompConnect Brochure</h1><p>Workers' compensation coverage delivered where payroll already lives.</p></div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="./">Back to Resource Hub</a>
+      <a class="btn primary" id="full" href="#" target="_blank" rel="noopener noreferrer">Open Full Screen</a>
+    </div>
+  </div>
+  <div class="viewer"><iframe id="viewer" title="CompConnect Brochure" allowfullscreen></iframe></div>
+</div>
+<script>
+const src=atob("aHR0cHM6Ly9wYXljb21wLW15LnNoYXJlcG9pbnQuY29tLzpiOi9wL2R2b25rbGVpc3QvSVFEbktrVzlETnVvUjdRTkRFMlhQOW1BQVFOa0xBN0ViQjFhSjJTMnp2N2FDUm8=");
+document.getElementById("viewer").src=src;
+document.getElementById("full").href=src;
+</script>
+</body>
+</html>
