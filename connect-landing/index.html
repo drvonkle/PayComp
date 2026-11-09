@@ -31,12 +31,12 @@ h1{margin:0 0 17px;font-size:clamp(49px,6.2vw,77px);font-weight:800;line-height:
 .card h2{font-size:25px;line-height:1.2;letter-spacing:-.035em;color:#0f2341;margin:0 0 10px}
 .card>p{font-size:14px;line-height:1.62;color:#566983;margin:0 0 18px}
 .executives{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:8px 0 21px}
-.executive{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:9px;padding:17px 10px 15px;border:1px solid #dfe9f7;border-radius:13px;background:linear-gradient(145deg,#fff,#f8fbff);box-shadow:0 5px 15px rgba(12,52,116,.035)}
-.executive-avatar{width:112px;height:112px;border-radius:50%;display:grid;place-items:center;padding:7px;border:1px solid #dce6f4;background:linear-gradient(155deg,#fffdf9 12%,#fff7e9 45%,#ffe59a 88%,#ffcf50 100%);box-shadow:0 5px 14px rgba(12,52,116,.09);overflow:hidden}
-.executive-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:center;display:block}
-.executive-avatar.johnny img{object-position:center 27%;-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 68%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 68%,transparent 100%)}
-.executive strong{font-size:15px;line-height:1.3;color:#0b2b79;font-weight:800}.executive small{display:block;color:#586b85;font-size:12px;line-height:1.3}
-@media(max-width:380px){.executives{gap:8px}.executive{padding:13px 6px}.executive-avatar{width:88px;height:88px}.executive strong{font-size:13px}.executive small{font-size:11px}}
+.executive{min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:9px;padding:17px 10px 15px;border:1px solid #dfe9f7;border-radius:13px;background:linear-gradient(130deg,#f0f6ff 0%,#f7faff 100%)}
+.executive-avatar{border-radius:50%;width:94px;height:94px;display:block;overflow:hidden;border:3px solid #fff;box-shadow:0 0 0 1px #dce6f4,0 5px 16px rgba(12,52,116,.12);flex:none;background:transparent}
+.executive-avatar img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}
+.executive strong{display:block;font-size:16px;line-height:1.35;color:#152a4a;letter-spacing:-.02em}
+.executive small{display:block;font-size:12px;line-height:1.5;color:#7285a0}
+@media(max-width:380px){.executives{gap:8px}.executive{padding:13px 6px}.executive-avatar{width:76px;height:76px}.executive strong{font-size:13px}.executive small{font-size:11px}}
 .meeting-actions{margin-top:auto}
 .cta{display:flex;align-items:center;justify-content:center;min-height:49px;width:100%;background:#1457d8;border:0;border-radius:9px;padding:12px 17px;font-size:14px;font-weight:750;color:#fff;transition:background .15s}
 .cta:hover{background:#0f46ba}.cta.navy{background:#0b1c38}.cta.navy:hover{background:#14315a}
@@ -100,7 +100,7 @@ body.thankyou-open{overflow:hidden}
   <section class="card meeting" aria-labelledby="meeting-title">
     <div class="glyph"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h4"/></svg></div>
     <h2 id="meeting-title">Book a meeting</h2>
-    <p>Connect with PayComp leadership. Schedule a conversation with Johnny Cardenas.</p>
+    <p>Connect with PayComp leadership, schedule a meeting below:</p>
     <div class="executives" aria-label="PayComp leadership"><div class="executive"><span class="executive-avatar"><img src="https://raw.githubusercontent.com/drvonkle/PayComp/main/website-rebuild/assets/troy-hefner-BZYHAVqF.png" alt="Troy Hefner" width="98" height="98" loading="lazy" decoding="async"></span><strong>Troy Hefner</strong><small>CEO | Founder</small></div><div class="executive"><span class="executive-avatar johnny"><img src="assets/johnny-cardenas-full.webp" alt="Johnny Cardenas" width="98" height="98" loading="lazy" decoding="async"></span><strong>Johnny Cardenas, MBA</strong><small>CRO | President</small></div></div>
     <div class="meeting-actions">
       <a class="cta" href="https://meetings-na2.hubspot.com/johnny-cardenas/johnnys-personal-calendar" target="_blank" rel="noopener noreferrer">Schedule a meeting</a>
