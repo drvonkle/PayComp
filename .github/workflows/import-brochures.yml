@@ -27,8 +27,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/brochures assets/brochures
-          curl --fail --location --retry 3             "https://paycomp-my.sharepoint.com/:b:/p/dvonkleist/IQDnKkW9DNuoR7QNDE2XP9mAAQNkLA7EbB1aJ2S2zv7aCRo?download=1"             --output /tmp/brochures/compconnect-source.pdf
-          curl --fail --location --retry 3             "https://paycomp-my.sharepoint.com/:b:/p/dvonkleist/IQCaytpJPcl6S7noI9eH3sLDAR7n6lsI1mlCi5p3Sy3puNk?download=1"             --output /tmp/brochures/paycomp-source.pdf
+          curl --fail --location --retry 3             "https://sdmntprwestus3.oaiusercontent.com/files/00000000-cbe4-81fd-a446-9ba98d46932f/raw?se=2026-11-10T03%3A23%3A53Z&sp=r&sv=2026-02-06&sr=b&scid=e17bb242-13ff-52cb-97cc-ca7c18f68bb6&skoid=b9a47e8b-72a2-4ed3-8028-a2a98c1a6142&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-09T23%3A58%3A34Z&ske=2026-11-10T23%3A58%3A34Z&sks=b&skv=2026-02-06&sig=6dRw47G0/k0l3JFHXYxcrxjRqf/HMWnr6NlhHoTZ9s4%3D"             --output /tmp/brochures/compconnect-source.pdf
+          curl --fail --location --retry 3             "https://sdmntprwestus3.oaiusercontent.com/files/00000000-5074-81fd-bfbe-75ba2bbc90d9/raw?se=2026-11-10T03%3A23%3A54Z&sp=r&sv=2026-02-06&sr=b&scid=7185dcff-2b00-5d60-b69d-a140283670ba&skoid=b9a47e8b-72a2-4ed3-8028-a2a98c1a6142&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-11-09T23%3A53%3A12Z&ske=2026-11-10T23%3A53%3A12Z&sks=b&skv=2026-02-06&sig=rIOi%2BLNXYPbQ3ss7KNbir31vlLLW/0QivHwfYqeHQ%2Bg%3D"             --output /tmp/brochures/paycomp-source.pdf
           test "$(head -c 5 /tmp/brochures/compconnect-source.pdf)" = "%PDF-"
           test "$(head -c 5 /tmp/brochures/paycomp-source.pdf)" = "%PDF-"
 
