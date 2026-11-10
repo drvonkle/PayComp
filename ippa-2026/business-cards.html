@@ -15,12 +15,12 @@ header{background:linear-gradient(112deg,#061a44,#114a93);padding:24px max(20px,
 h1{font-size:clamp(24px,2.7vw,40px);letter-spacing:-.03em;margin:0}
 header p{margin:8px 0 0;color:#c7e5fa}
 .header-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.connect-callout{margin-left:-155px;margin-right:18px}
-.connect-callout{display:flex;align-items:center;gap:18px;color:#fff;font-weight:850;font-size:16px;letter-spacing:-.01em;white-space:nowrap}
-.connect-text{color:#dff4ff;text-shadow:0 1px 0 rgba(0,0,0,.08)}
-.arrow-wrap{display:inline-flex;align-items:center;gap:0;margin-right:12px;filter:drop-shadow(0 0 12px rgba(254,201,0,.95));animation:arrowNudge .9s ease-in-out infinite}
-.arrow-line{display:block;width:68px;height:6px;border-radius:999px;background:linear-gradient(90deg,#7fe5ff 0%,#FEC900 68%,#fff7bf 100%);box-shadow:0 0 18px rgba(254,201,0,.85)}
-.arrow-head{display:block;width:21px;height:21px;margin-left:-5px;border-top:6px solid #FEC900;border-right:6px solid #FEC900;transform:rotate(45deg);box-shadow:2px -2px 13px rgba(254,201,0,.75)}
-@keyframes arrowNudge{0%,100%{transform:translateX(0) scale(1);opacity:.9}50%{transform:translateX(8px) scale(1.08);opacity:1}}@keyframes connectPulse{0%,100%{transform:scale(1);box-shadow:0 8px 22px rgba(0,0,0,.2),0 0 0 0 rgba(254,201,0,.38)}50%{transform:scale(1.045);box-shadow:0 12px 28px rgba(0,0,0,.26),0 0 0 10px rgba(254,201,0,0)}}
+.connect-callout{display:flex;align-items:center;gap:20px;color:#fff;font-weight:900;font-size:20px;letter-spacing:-.015em;white-space:nowrap}
+.connect-text{color:#e8f8ff;text-shadow:0 2px 10px rgba(126,229,255,.45);animation:calloutNudge .9s ease-in-out infinite}
+.arrow-wrap{display:inline-flex;align-items:center;gap:0;margin-right:16px;filter:drop-shadow(0 0 15px rgba(254,201,0,1));animation:arrowNudge .9s ease-in-out infinite}
+.arrow-line{display:block;width:82px;height:7px;border-radius:999px;background:linear-gradient(90deg,#7fe5ff 0%,#FEC900 65%,#fff7bf 100%);box-shadow:0 0 22px rgba(254,201,0,.95)}
+.arrow-head{display:block;width:25px;height:25px;margin-left:-6px;border-top:7px solid #FEC900;border-right:7px solid #FEC900;transform:rotate(45deg);box-shadow:2px -2px 16px rgba(254,201,0,.9)}
+@keyframes calloutNudge{0%,100%{transform:translateX(0) scale(1);opacity:.92}50%{transform:translateX(8px) scale(1.04);opacity:1}}@keyframes arrowNudge{0%,100%{transform:translateX(0) scale(1);opacity:.9}50%{transform:translateX(8px) scale(1.08);opacity:1}}@keyframes connectPulse{0%,100%{transform:scale(1);box-shadow:0 8px 22px rgba(0,0,0,.2),0 0 0 0 rgba(254,201,0,.38)}50%{transform:scale(1.045);box-shadow:0 12px 28px rgba(0,0,0,.26),0 0 0 10px rgba(254,201,0,0)}}
 .back,.connect{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:11px;padding:11px 15px;font-weight:750;transition:transform .18s ease,box-shadow .18s ease}
 .back{color:#fff;border:1px solid #ffffff65;background:transparent}
 .connect{color:#061a44;background:linear-gradient(135deg,#FEC900,#ffdf63);border:1px solid #ffe37c;box-shadow:0 8px 22px #0003;animation:connectPulse 1.65s ease-in-out infinite}
@@ -39,7 +39,7 @@ dialog::backdrop{background:rgba(1,13,32,.82);backdrop-filter:blur(6px)}
 dialog img{display:block;width:min(1400px,92vw);height:auto;max-height:83vh;object-fit:contain}
 dialog .close{display:block;margin:0 0 12px auto;background:#061a44;color:#fff;border:0;border-radius:8px;padding:10px 15px;cursor:pointer;font-size:15px;font-weight:700}
 @media(max-width:860px){.cards{grid-template-columns:1fr;max-width:760px;margin:auto}main{width:min(94vw,1760px)}header{padding:22px}.header-actions{width:100%}.back,.connect{flex:1}.connect-callout{width:100%;justify-content:flex-start;margin-left:0;margin-right:0}}
-@media(prefers-reduced-motion:reduce){.visual,.back,.connect{transition:none}.visual:hover,.back:hover,.connect:hover{transform:none}.arrow-wrap{animation:none}.connect{animation:none}}
+@media(prefers-reduced-motion:reduce){.visual,.back,.connect{transition:none}.visual:hover,.back:hover,.connect:hover{transform:none}.connect-text,.arrow-wrap{animation:none}.connect{animation:none}}
 </style>
 </head>
 <body>
