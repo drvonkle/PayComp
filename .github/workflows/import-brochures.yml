@@ -1,0 +1,82 @@
+name: Import brochure PDFs into Resource Hub
+
+on:
+  push:
+    paths:
+      - ".github/workflows/import-brochures.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-brochures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Ghostscript
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ghostscript
+
+      - name: Download brochure source PDFs
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/brochures assets/brochures
+          curl --fail --location --retry 3             "https://paycomp-my.sharepoint.com/:b:/p/dvonkleist/IQDnKkW9DNuoR7QNDE2XP9mAAQNkLA7EbB1aJ2S2zv7aCRo?download=1"             --output /tmp/brochures/compconnect-source.pdf
+          curl --fail --location --retry 3             "https://paycomp-my.sharepoint.com/:b:/p/dvonkleist/IQCaytpJPcl6S7noI9eH3sLDAR7n6lsI1mlCi5p3Sy3puNk?download=1"             --output /tmp/brochures/paycomp-source.pdf
+          test "$(head -c 5 /tmp/brochures/compconnect-source.pdf)" = "%PDF-"
+          test "$(head -c 5 /tmp/brochures/paycomp-source.pdf)" = "%PDF-"
+
+      - name: Optimize PDFs for browser scrolling
+        run: |
+          set -euo pipefail
+          optimize_pdf() {
+            local input="$1"
+            local output="$2"
+            gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.6 -dNOPAUSE -dQUIET -dBATCH               -dDetectDuplicateImages=true -dCompressFonts=true -dSubsetFonts=true               -dDownsampleColorImages=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=150               -dAutoFilterColorImages=false -dColorImageFilter=/DCTEncode -dJPEGQ=90               -dDownsampleGrayImages=true -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=150               -dAutoFilterGrayImages=false -dGrayImageFilter=/DCTEncode               -dDownsampleMonoImages=true -dMonoImageResolution=300               -sOutputFile="$output" "$input"
+          }
+          optimize_pdf /tmp/brochures/compconnect-source.pdf assets/brochures/compconnect-brochure.pdf
+          optimize_pdf /tmp/brochures/paycomp-source.pdf assets/brochures/paycomp-brochure.pdf
+          test "$(head -c 5 assets/brochures/compconnect-brochure.pdf)" = "%PDF-"
+          test "$(head -c 5 assets/brochures/paycomp-brochure.pdf)" = "%PDF-"
+
+      - name: Point brochure buttons directly to local PDFs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("index.html")
+          s = p.read_text()
+          s = s.replace('href="compconnect-brochure.html"', 'href="assets/brochures/compconnect-brochure.pdf"')
+          s = s.replace('href="paycomp-brochure.html"', 'href="assets/brochures/paycomp-brochure.pdf"')
+          p.write_text(s)
+
+          Path("compconnect-brochure.html").write_text("""<!doctype html>
+          <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>CompConnect Brochure</title><meta http-equiv="refresh" content="0; url=assets/brochures/compconnect-brochure.pdf">
+          <script>location.replace("assets/brochures/compconnect-brochure.pdf");</script></head>
+          <body><a href="assets/brochures/compconnect-brochure.pdf">Open CompConnect Brochure PDF</a></body></html>""")
+
+          Path("paycomp-brochure.html").write_text("""<!doctype html>
+          <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>PayComp Brochure</title><meta http-equiv="refresh" content="0; url=assets/brochures/paycomp-brochure.pdf">
+          <script>location.replace("assets/brochures/paycomp-brochure.pdf");</script></head>
+          <body><a href="assets/brochures/paycomp-brochure.pdf">Open PayComp Brochure PDF</a></body></html>""")
+          PY
+
+      - name: Commit brochures to Resource Hub
+        run: |
+          set -euo pipefail
+          git config user.name "PayComp Resource Hub"
+          git config user.email "actions@users.noreply.github.com"
+          git add assets/brochures/compconnect-brochure.pdf assets/brochures/paycomp-brochure.pdf index.html compconnect-brochure.html paycomp-brochure.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Host brochure PDFs directly in Resource Hub"
+          git push
