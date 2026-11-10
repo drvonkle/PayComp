@@ -4,13 +4,18 @@
   const canvas = overlay.querySelector('canvas');
   const context = canvas.getContext('2d');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const isIPad = document.documentElement.classList.contains('ipad');
+  const heroImage = overlay.querySelector('img');
   let clicks = 0, resetClicks, cleanupTimer, outroTimer, frame, audio, running = false;
   let restoreOverflow, restoreFocus;
+  if (isIPad) return;
   logo.tabIndex = 0;
   logo.setAttribute('role', 'button');
   logo.setAttribute('aria-label', 'PayComp logo');
-  const preload = new Image();
-  preload.src = overlay.querySelector('img').src;
+
+  function ensureHeroImage() {
+    if (!heroImage.getAttribute('src') && heroImage.dataset.src) heroImage.setAttribute('src', heroImage.dataset.src);
+  }
 
   function fanfare() {
     try {
@@ -56,6 +61,7 @@
   }
 
   function reveal() {
+    ensureHeroImage();
     running=true; clicks=0; clearTimeout(resetClicks);
     restoreOverflow=document.body.style.overflow; restoreFocus=document.activeElement;
     document.body.style.overflow='hidden';

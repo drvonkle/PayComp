@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#061A44">
 <title>PayComp Resource Hub</title>
+<script>(function(){var ua=navigator.userAgent||"";var ipad=/iPad/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);if(ipad)document.documentElement.classList.add("ipad");})();</script>
 <style>
 :root{--navy:#061A44;--blue:#0b57d0;--cyan:#06B0ED;--gold:#FEC900;--orange:#FE8B00;--bg:#f3f8ff;--card:#fff;--text:#0a2c78;--muted:#5f78a9;--line:#d8e6fb}
 *{box-sizing:border-box}
@@ -153,6 +154,46 @@ footer{text-align:center;padding:26px 0 0;font-weight:800;color:var(--muted);fon
 @media(max-width:650px){.card.ippa-retreat-card{grid-template-columns:1fr;gap:16px;padding:26px 22px;background:linear-gradient(90deg,rgba(27,12,58,.48),rgba(27,12,58,.31)),url("assets/ippa-retreat-sunset.svg") center/cover no-repeat}.ippa-retreat-mark{width:98px;height:98px}.ippa-retreat-mark .ippa-brand{font-size:27px}.ippa-retreat-mark strong{font-size:33px}.ippa-retreat-kicker{font-size:11px}.card.ippa-retreat-card h2{font-size:30px}.card.ippa-retreat-card .btn{width:100%}}
 
 .ippa-retreat-card .ippa-placeholder-btn{opacity:.64;cursor:not-allowed;filter:saturate(.65);pointer-events:none}
+
+/* iPad Safari stability mode: keep all content/links, reduce GPU-heavy decoration. */
+html.ipad body{cursor:auto}
+html.ipad a,html.ipad button,html.ipad .btn,html.ipad .teamlink{cursor:pointer}
+html.ipad .saas-mesh,
+html.ipad .saas-rings,
+html.ipad .saas-glow,
+html.ipad .light-beam,
+html.ipad .data-stream,
+html.ipad .data-node,
+html.ipad .circuit-layer,
+html.ipad .data-orbit{display:none!important}
+html.ipad .saas-bg{background:
+radial-gradient(circle at 12% 10%,rgba(6,176,237,.14),transparent 28%),
+radial-gradient(circle at 88% 12%,rgba(22,93,255,.10),transparent 28%),
+linear-gradient(180deg,#fafdff 0%,#eef6ff 100%)}
+html.ipad .saas-grid{animation:none!important;opacity:.36;filter:none;transform:none}
+html.ipad .logo-glow,
+html.ipad .logo-scan,
+html.ipad .logo-scan:after,
+html.ipad .hero:before,
+html.ipad .hero .eyebrow,
+html.ipad .hero-title,
+html.ipad .hero-title .hero-dot{animation:none!important}
+html.ipad .logo-glow{filter:none;opacity:.45}
+html.ipad .card,
+html.ipad .icon3d,
+html.ipad .icon3d:after,
+html.ipad h2,
+html.ipad .btn,
+html.ipad .btn:before,
+html.ipad .teamlink,
+html.ipad .mini{transition:none!important}
+html.ipad .card:hover,
+html.ipad .card:hover .icon3d,
+html.ipad .btn:hover,
+html.ipad .teamlink:hover,
+html.ipad .teamlink:hover .mini{transform:none!important}
+html.ipad .hero-easter-egg{display:none!important}
+
 </style>
 <link rel="stylesheet" href="easter-egg.css?v=2">
 </head>
@@ -212,7 +253,7 @@ footer{text-align:center;padding:26px 0 0;font-weight:800;color:var(--muted);fon
 <footer><b>PayComp</b> Seamless Pay-As-You-Go Integration</footer>
 </div>
 
-<div id="heroEasterEgg" class="hero-easter-egg" aria-hidden="true"><img src="assets/easter-egg/paycomp-hero.webp?v=2" alt="PayComp superhero duo"><canvas aria-hidden="true"></canvas></div>
+<div id="heroEasterEgg" class="hero-easter-egg" aria-hidden="true"><img data-src="assets/easter-egg/paycomp-hero.webp?v=2" alt="PayComp superhero duo"><canvas aria-hidden="true"></canvas></div>
 <script src="easter-egg.js" defer></script>
 </body>
 </html>
