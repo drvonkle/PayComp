@@ -1,3 +1,63 @@
 {
-  "ignoreCommand": "git diff --name-only HEAD^ HEAD | grep -qv '^connect-landing/' && exit 1 || exit 0"
+  "ignoreCommand": "git diff --name-only HEAD^ HEAD | grep -qv '^connect-landing/' && exit 1 || exit 0",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/team",
+      "destination": "/team/index.html",
+      "permanent": false
+    },
+    {
+      "source": "/team/",
+      "destination": "/team/index.html",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/team",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/team/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/team/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
+  ]
 }
