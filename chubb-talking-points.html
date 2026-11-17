@@ -199,7 +199,7 @@
     <p class="subtitle">A Fortune 500 carrier validated the problem, raised no objections, and left with concrete next steps in motion. Every point below links to the exact clip in the recording.</p>
     <div class="meta">
       <span class="date">November 2026</span>
-      <a class="btn" href="full-call.mp4" data-video="full-call.mp4">
+      <a class="btn" href="full-call-part-00.mp4" data-video="full-call-part-00.mp4" data-full-call="true">
         <svg width="12" height="14" viewBox="0 0 12 14" fill="currentColor" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
         Watch Entire Call
       </a>
@@ -323,7 +323,11 @@
 (function(){
 const modal=document.getElementById('clip-modal'),video=document.getElementById('clip-player'),close=document.getElementById('close-clip');
 document.querySelectorAll('[data-video]').forEach(a=>a.addEventListener('click',function(e){e.preventDefault();video.src=this.getAttribute('data-video');modal.hidden=false;modal.style.display='flex';video.play().catch(()=>{});close.focus()}));
-function hide(){video.pause();video.removeAttribute('src');video.load();modal.hidden=true;modal.style.display='none'}
+const parts=['full-call-part-00.mp4','full-call-part-01.mp4','full-call-part-02.mp4','full-call-part-03.mp4','full-call-part-04.mp4','full-call-part-05.mp4','full-call-part-06.mp4'];
+let playingFull=false,partIndex=0;
+document.querySelectorAll('[data-video]').forEach(a=>a.addEventListener('click',()=>{playingFull=a.hasAttribute('data-full-call');partIndex=0}));
+video.addEventListener('ended',()=>{if(playingFull&&partIndex<parts.length-1){partIndex++;video.src=parts[partIndex];video.play().catch(()=>{});}});
+function hide(){playingFull=false;video.pause();video.removeAttribute('src');video.load();modal.hidden=true;modal.style.display='none'}
 close.addEventListener('click',hide);modal.addEventListener('click',e=>{if(e.target===modal)hide()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)hide()});
 })();
 </script>
